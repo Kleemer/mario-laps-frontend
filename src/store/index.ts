@@ -1,29 +1,47 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import { VueConstructor } from 'vue'
+import Vuex, {
+  Store, MutationTree, ActionTree, StoreOptions, ModuleTree,
+} from 'vuex'
+import room from './modules/room'
 
-Vue.use(Vuex);
+export interface RootState {
+  player: string | null
+  roomId: string | null
+}
 
-export default new Vuex.Store({
-  state: {
-    player: null,
-    room: null,
+const state: RootState = {
+  player: null,
+  roomId: null,
+}
+
+export const mutations: MutationTree<RootState> = {
+  setPlayer(state, payload) {
+    state.player = payload
   },
-  mutations: {
-    SET_PLAYER : (state, payload) => {
-      state.player = payload
-    },
-    SET_ROOM : (state, payload) => {
-      state.room = payload
-    },
+  setRoomId(state, payload) {
+    state.roomId = payload
   },
-  actions: {
-    SET_PLAYER: (context, payload) => {
-      context.commit('SET_PLAYER', payload)
-    },
-    SET_ROOM: (context, payload) => {
-      context.commit('SET_ROOM', payload)
-    },
+}
+
+export const actions: ActionTree<RootState, RootState> = {
+  setPlayer({ commit }, payload) {
+    commit('setPlayer', payload)
   },
-  modules: {
+  setRoomId({ commit, dispatch }, payload) {
+    commit('setRoomId', payload)
+    dispatch('room/setId', payload)
   },
-});
+}
+
+export const modules: ModuleTree<RootState> = { room }
+
+export default (vue: VueConstructor): Store<RootState> => {
+  vue.use(Vuex)
+
+  return new Vuex.Store({
+    state,
+    mutations,
+    actions,
+    modules,
+  })
+}

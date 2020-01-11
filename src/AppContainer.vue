@@ -19,16 +19,28 @@ import { VApp } from 'vuetify/lib'
  */
 export default Vue.extend({
   name: 'AppContainer',
+  sockets: {
+    connect() {
+      console.log('socket connected')
+    },
+    addUser(event) {
+      console.log('newUser', event)
+      this.$store.dispatch('room/addUser', event)
+    },
+    removeUser(event) {
+      console.log('newUser', event)
+      this.$store.dispatch('room/removeUser', event)
+    },
+  },
 })
 </script>
 
 <style lang="scss">
 @import "./assets/scss/app";
-
 #app {
   font-family: $base-font-family;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: $base-font-color;
+  background-color: $base-font-color;
 }
 </style>

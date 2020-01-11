@@ -22,7 +22,8 @@
         </VCardText>
         <VBtn
           depressed
-          color="primary">
+          color="primary"
+          @click="joinRoom">
           Rejoindre un Mario Lap
         </VBtn>
       </VCardText>
@@ -33,6 +34,8 @@
 <script>
 import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
 import PlayerSelector from '@/components/PlayerSelector.vue'
+
+import { getRandomString } from '@/shared/string.js'
 
 export default {
   name: 'home',
@@ -47,7 +50,13 @@ export default {
   },
   methods: {
     createLobby() {
-      return
+      const room = getRandomString(2)
+      this.$store.dispatch('setRoomId', room)
+      this.$socket.client.emit('createRoom', { roomId: room, username: this.player })
+      this.$router.push('lobby')
+    },
+    joinRoom() {
+      this.$router.push('join-room')
     },
   },
 }

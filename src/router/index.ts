@@ -16,9 +16,9 @@ const routes = [
    component: () => import(/* webpackChunkName: "lobby" */ '../views/Lobby.vue'),
   },
   {
-    path: '/join-game',
-    name: 'join-game',
-    component: () => import(/* webpackChunkName: "join-game" */ '../views/JoinGame.vue'),
+    path: '/join-room',
+    name: 'join-room',
+    component: () => import(/* webpackChunkName: "join-room" */ '../views/JoinRoom.vue'),
   },
 ]
 

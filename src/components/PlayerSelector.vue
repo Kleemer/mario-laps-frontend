@@ -25,7 +25,7 @@ export default Vue.extend({
   },
   methods: {
     onChange(player: string) {
-      this.$store.dispatch('SET_PLAYER', player)
+      this.$store.dispatch('setPlayer', player)
       localStorage.setItem('player', player)
     },
   },

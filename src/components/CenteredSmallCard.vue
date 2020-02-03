@@ -17,7 +17,7 @@
         </VBtn>
         <VCard
           :width="450"
-          class="pa-4">
+          class="py-2 px-0">
           <VCardText>
             <slot />
           </VCardText>

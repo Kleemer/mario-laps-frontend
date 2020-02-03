@@ -3,18 +3,20 @@ import Vuex, {
   Store, MutationTree, ActionTree, StoreOptions, ModuleTree,
 } from 'vuex'
 import room from './modules/room'
+import { resetMixin } from '@/store/utils'
 
 export interface RootState {
   player: string | null
   roomId: string | null
 }
 
-const state: RootState = {
+const state = (): RootState => ({
   player: null,
   roomId: null,
-}
+})
 
 export const mutations: MutationTree<RootState> = {
+  ...resetMixin(state),
   setPlayer(state, payload) {
     state.player = payload
   },
@@ -30,6 +32,11 @@ export const actions: ActionTree<RootState, RootState> = {
   setRoomId({ commit, dispatch }, payload) {
     commit('setRoomId', payload)
     dispatch('room/setId', payload)
+  },
+  reset({ commit, dispatch }) {
+    console.log('store index reset')
+    commit('reset')
+    commit('room/reset')
   },
 }
 

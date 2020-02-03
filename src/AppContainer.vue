@@ -24,11 +24,11 @@ export default Vue.extend({
       console.log('socket connected')
     },
     addUser(event) {
-      console.log('newUser', event)
+      console.log('addUser', event)
       this.$store.dispatch('room/addUser', event)
     },
     removeUser(event) {
-      console.log('newUser', event)
+      console.log('removeUser', event)
       this.$store.dispatch('room/removeUser', event)
     },
   },

@@ -48,6 +48,9 @@ export default {
       return this.$store.state.player
     },
   },
+  mounted() {
+    this.$store.dispatch('reset')
+  },
   methods: {
     createLobby() {
       const room = getRandomString(2)

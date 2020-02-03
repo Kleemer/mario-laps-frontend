@@ -1,7 +1,8 @@
 import {
   Module, MutationTree, ActionTree,
 } from 'vuex'
-import { RootState } from '..'
+import { RootState } from '@/store'
+import { resetMixin } from '@/store/utils'
 
 export interface RoomState {
   id: string | null
@@ -9,13 +10,14 @@ export interface RoomState {
   users: Array<Record<string, any>>
 }
 
-const state: RoomState = {
+const state = (): RoomState => ({
   id: null,
   hostId: null,
   users: [],
-}
+})
 
 const mutations: MutationTree<RoomState> = {
+  ...resetMixin(state),
   setId: (state, payload) => {
     state.id = payload
   },

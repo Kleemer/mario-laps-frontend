@@ -37,10 +37,9 @@ export default Vue.extend({
 
 <style lang="scss">
 @import "./assets/scss/app";
+
 #app {
-  font-family: $base-font-family;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: $base-font-color;
 }
 </style>

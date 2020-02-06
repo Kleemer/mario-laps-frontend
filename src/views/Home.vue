@@ -4,7 +4,7 @@
       Qui êtes-vous?
     </VCardTitle>
     <VCardText>
-      <PlayerSelector/>
+      <PlayerSelector :value="player"/>
     </VCardText>
     <template v-if="player">
       <VCardTitle class="justify-center font-weight-bold headline">
@@ -50,6 +50,11 @@ export default {
   },
   mounted() {
     this.$store.dispatch('reset')
+    const existingPlayer = localStorage.getItem('player')
+    if (existingPlayer) {
+      this.$store.dispatch('setPlayer', existingPlayer)
+      localStorage.setItem('player', existingPlayer)
+    }
   },
   methods: {
     createLobby() {

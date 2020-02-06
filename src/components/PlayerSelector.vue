@@ -1,33 +1,33 @@
 <template>
   <VSelect
     :items="items"
-    v-model="player"
-    label="T ki"
+    :value="value"
+    label="Joueur"
     @change="onChange"
     />
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-export default Vue.extend({
-  data() {
-    return {
-      player: null as string | null,
-      items: [ 'Ouzt', 'Alves', 'Nathou', 'Yass' ] as string[],
-    }
-  },
-  created() {
-    const existingPlayer = localStorage.getItem('player')
-    if (existingPlayer) {
-      this.player = existingPlayer
-      this.onChange(existingPlayer)
-    }
-  },
-  methods: {
-    onChange(player: string) {
-      this.$store.dispatch('setPlayer', player)
-      localStorage.setItem('player', player)
-    },
-  },
-})
+import {
+  Component, Vue, Prop,
+} from 'vue-property-decorator'
+import { User } from '@/types'
+
+type FormState = Pick<User, 'username'> | null
+
+export interface Props {
+  value: FormState
+}
+
+@Component({ })
+export default class PlayerSelector extends Vue {
+  @Prop(String) public readonly value!: Props['value']
+
+  private items: string[] = [ 'Ouzt', 'Alves', 'Nathou', 'Yass' ]
+
+  private onChange(player: string) {
+    this.$store.dispatch('setPlayer', player)
+    localStorage.setItem('player', player)
+  }
+}
 </script>

@@ -46,7 +46,7 @@ export default Vue.extend({
         'joinRoom',
         { roomId: this.roomId, username: this.player },
       )
-      // todo
+      // @todo
       console.log(res)
       this.$router.push('lobby')
     },

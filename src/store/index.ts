@@ -34,7 +34,6 @@ export const actions: ActionTree<RootState, RootState> = {
     dispatch('room/setId', payload)
   },
   reset({ commit, dispatch }) {
-    console.log('store index reset')
     commit('reset')
     commit('room/reset')
   },

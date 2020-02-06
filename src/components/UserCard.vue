@@ -1,7 +1,7 @@
 <template>
   <VCard outlined>
       <VImg :src="source" class="w-full" />
-    {{ user }}
+    {{ user.username }}
   </VCard>
 </template>
 

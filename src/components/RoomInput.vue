@@ -24,51 +24,50 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-export default Vue.extend({
-  data() {
-    return {
-      errorMessages: [],
-      roomId: '',
+import {
+  Component, Vue, Prop,
+} from 'vue-property-decorator'
+import { Room } from '@/types'
+
+@Component({ })
+export default class RoomInput extends Vue {
+  private errorMessages: string[] = []
+  private roomId: string = ''
+
+  private get playerUsername() {
+    return this.$store.state.player.username
+  }
+
+  private onInput() {
+    this.roomId = this.roomId.toUpperCase()
+  }
+
+  private async joinRoom() {
+    if (this.roomId.length < 2) {
+      this.errorMessages = ['Type a valid room ID.']
+      return
     }
-  },
-  computed: {
-    playerUsername() {
-      return this.$store.state.player.username
-    },
-  },
-  methods: {
-    onInput() {
-      this.roomId = this.roomId.toUpperCase()
-    },
 
-    async joinRoom() {
-      if (this.roomId.length < 2) {
-        this.errorMessages = ['Type a valid room ID.']
-        return
-      }
+    await this.$socket.client.emit(
+      'joinRoom',
+      { roomId: this.roomId, username: this.playerUsername },
+      (response: string | Room) => this.onResponse(response),
+    )
+  }
 
-      await this.$socket.client.emit(
-        'joinRoom',
-        { roomId: this.roomId, username: this.playerUsername },
-        (response) => this.onResponse(response)
-      )
-    },
-    onResponse(response) {
-      console.log(response)
-      if (response === 'noRoom') {
-        this.errorMessages = ['Room does not exist.']
-        return
-      }
-      if (response === 'alreadyInRoom') {
-        this.errorMessages = ['Player already in the room.']
-        return
-      }
-
-      this.$store.dispatch('setRoomId', response.roomId)
-      this.$store.dispatch('room/setRoom', response)
-      this.$router.replace({ name: 'lobby' })
+  private onResponse(response: string | Room) {
+    if (response === 'noRoom') {
+      this.errorMessages = ['Room does not exist.']
+      return
     }
-  },
-})
+    if (response === 'alreadyInRoom') {
+      this.errorMessages = ['Player already in the room.']
+      return
+    }
+
+    this.$store.dispatch('setRoomId', (response as Room).id)
+    this.$store.dispatch('room/setRoom', response as Room)
+    this.$router.replace({ name: 'lobby' })
+  }
+}
 </script>

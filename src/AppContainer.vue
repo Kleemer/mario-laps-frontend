@@ -35,7 +35,7 @@ export default Vue.extend({
     updateHostId(event) {
       console.log('updateHostId', event)
       this.$store.dispatch('room/setHostId', event)
-    }
+    },
   },
 })
 </script>

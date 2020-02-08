@@ -62,17 +62,17 @@ export default {
       await this.$socket.client.emit(
         'createRoom',
         { roomId, username: this.playerUsername },
-        (response) => this.onResponse(response)
+        (response) => this.onResponse(response),
       )
     },
     joinRoom() {
       this.$router.push('join-room')
     },
     onResponse(response) {
-      this.$store.dispatch('setRoomId', response.roomId)
+      this.$store.dispatch('setRoomId', response.id)
       this.$store.dispatch('room/setRoom', response)
       this.$router.push('lobby')
-    }
+    },
   },
 }
 </script>

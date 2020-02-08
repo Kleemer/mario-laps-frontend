@@ -47,14 +47,17 @@ export default {
     roomId() {
       return this.$store.state.roomId
     },
+    hostId() {
+      return this.$store.state.room.hostId
+    },
     users() {
       return this.$store.state.room.users
     },
   },
   methods: {
     leaveRoom() {
-      this.$store.dispatch('setRoomId', null)
       this.$socket.client.emit('leaveRoom', this.roomId)
+      this.$store.dispatch('setRoomId', null)
       this.$store.dispatch('reset')
       this.$router.push('/')
     },

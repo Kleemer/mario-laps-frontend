@@ -4,14 +4,18 @@ import Vuex, {
 } from 'vuex'
 import room from './modules/room'
 import { resetMixin } from '@/store/utils'
+import { User } from '@/types'
 
 export interface RootState {
-  player: string | null
+  player: User | Record<string, any>
   roomId: string | null
 }
 
 const state = (): RootState => ({
-  player: null,
+  player: {
+    id: null,
+    username: null,
+  },
   roomId: null,
 })
 
@@ -19,6 +23,12 @@ export const mutations: MutationTree<RootState> = {
   ...resetMixin(state),
   setPlayer(state, payload) {
     state.player = payload
+  },
+  setPlayerId(state, payload) {
+    state.player.id = payload
+  },
+  setPlayerUsername(state, payload) {
+    state.player.username = payload
   },
   setRoomId(state, payload) {
     state.roomId = payload
@@ -28,6 +38,12 @@ export const mutations: MutationTree<RootState> = {
 export const actions: ActionTree<RootState, RootState> = {
   setPlayer({ commit }, payload) {
     commit('setPlayer', payload)
+  },
+  setPlayerId({ commit }, payload) {
+    commit('setPlayerId', payload)
+  },
+  setPlayerUsername({ commit }, payload) {
+    commit('setPlayerUsername', payload)
   },
   setRoomId({ commit, dispatch }, payload) {
     commit('setRoomId', payload)

@@ -20,14 +20,14 @@ export interface Props {
 }
 
 @Component({ })
-export default class PlayerSelector extends Vue {
+export default class PlayerUsernameSelector extends Vue {
   @Prop(String) public readonly value!: Props['value']
 
   private items: string[] = [ 'Ouzt', 'Alves', 'Nathou', 'Yass' ]
 
-  private onChange(player: string) {
-    this.$store.dispatch('setPlayer', player)
-    localStorage.setItem('player', player)
+  private onChange(username: string) {
+    this.$store.dispatch('setPlayerUsername', username)
+    localStorage.setItem('username', username)
   }
 }
 </script>

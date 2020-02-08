@@ -44,6 +44,11 @@ const mutations: MutationTree<RoomState> = {
 }
 
 const actions: ActionTree<RoomState, RootState>  = {
+  setRoom({ dispatch }, payload) {
+    dispatch('setId', payload.roomId)
+    dispatch('setHostId', payload.hostId)
+    dispatch('setUsers', payload.users)
+  },
   setId({ commit }, payload) {
     commit('setId', payload)
   },

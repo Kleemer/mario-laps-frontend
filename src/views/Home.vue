@@ -4,9 +4,9 @@
       Qui êtes-vous?
     </VCardTitle>
     <VCardText>
-      <PlayerSelector :value="player"/>
+      <PlayerUsernameSelector :value="playerUsername"/>
     </VCardText>
-    <template v-if="player">
+    <template v-if="playerUsername">
       <VCardTitle class="justify-center font-weight-bold headline">
         Que voulez-vous faire?
       </VCardTitle>
@@ -33,39 +33,46 @@
 
 <script>
 import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
-import PlayerSelector from '@/components/PlayerSelector.vue'
+import PlayerUsernameSelector from '@/components/PlayerUsernameSelector.vue'
 
 import { getRandomString } from '@/shared/string.js'
+import { getPlayerUsername } from '@/shared/user.js'
 
 export default {
   name: 'home',
   components: {
     CenteredSmallCard,
-    PlayerSelector,
+    PlayerUsernameSelector,
   },
   computed: {
-    player() {
-      return this.$store.state.player
+    playerUsername() {
+      return this.$store.state.player.username
     },
   },
   mounted() {
     this.$store.dispatch('reset')
-    const existingPlayer = localStorage.getItem('player')
-    if (existingPlayer) {
-      this.$store.dispatch('setPlayer', existingPlayer)
-      localStorage.setItem('player', existingPlayer)
+    const playerUsername = getPlayerUsername()
+    if (playerUsername) {
+      this.$store.dispatch('setPlayerUsername', playerUsername)
     }
   },
   methods: {
-    createLobby() {
-      const room = getRandomString(2)
-      this.$store.dispatch('setRoomId', room)
-      this.$socket.client.emit('createRoom', { roomId: room, username: this.player })
-      this.$router.push('lobby')
+    async createLobby() {
+      const roomId = getRandomString(2)
+      await this.$socket.client.emit(
+        'createRoom',
+        { roomId, username: this.playerUsername },
+        (response) => this.onResponse(response)
+      )
     },
     joinRoom() {
       this.$router.push('join-room')
     },
+    onResponse(response) {
+      this.$store.dispatch('setRoomId', response.roomId)
+      this.$store.dispatch('room/setRoom', response)
+      this.$router.push('lobby')
+    }
   },
 }
 </script>

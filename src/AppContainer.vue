@@ -20,8 +20,9 @@ import { VApp } from 'vuetify/lib'
 export default Vue.extend({
   name: 'AppContainer',
   sockets: {
-    connect() {
-      console.log('socket connected')
+    connect(event) {
+      console.log('socket connected', this.$socket.client.id)
+      this.$store.dispatch('setPlayerId', this.$socket.client.id)
     },
     addUser(event) {
       console.log('addUser', event)
@@ -31,6 +32,10 @@ export default Vue.extend({
       console.log('removeUser', event)
       this.$store.dispatch('room/removeUser', event)
     },
+    updateHostId(event) {
+      console.log('updateHostId', event)
+      this.$store.dispatch('room/setHostId', event)
+    }
   },
 })
 </script>

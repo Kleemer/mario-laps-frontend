@@ -1,5 +1,5 @@
 import { ResponseBody } from '@/api/types'
-import { fetchJson } from '@/api'
+import { fetchJson, fetchAny } from '@/api'
 import routes from '@/api/routes'
 
 export type AuthResponse = ResponseBody<Data>
@@ -20,5 +20,18 @@ export const login = async (input: Record<string, any>) => {
       }),
     },
   )
-  // @todo store response access_token? Cookie is better
+
+  // @todo check if errors
+  return
+}
+
+export const logout = async () => {
+  const response = await fetchAny(
+    routes.logout.path,
+    {
+      method: routes.logout.method,
+    },
+  )
+
+  return
 }

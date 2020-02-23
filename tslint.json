@@ -18,6 +18,7 @@
     "semicolon":false,
     "object-literal-key-quotes": false,
     "no-shadowed-variable": false,
-    "no-console": false
+    "no-console": false,
+    "ban-types": false
   }
 }

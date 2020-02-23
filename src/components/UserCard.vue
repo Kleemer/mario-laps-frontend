@@ -24,7 +24,8 @@ export interface Props {
 export default class UserCard extends Vue {
   @Prop(Object) public readonly user!: Props['user']
 
-  private random = +(this.user.id.charCodeAt(this.user.id.length - 1) % 2 === 0)
+  // @ts-ignore
+  private random: number = +(this.user.id.charCodeAt(this.user.id.length - 1) % 2 === 0)
 
   private publicPath = process.env.BASE_URL
 

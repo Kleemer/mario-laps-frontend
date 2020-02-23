@@ -38,6 +38,9 @@ import PlayerUsernameSelector from '@/components/PlayerUsernameSelector.vue'
 import { getRandomString } from '@/shared/string.js'
 import { getPlayerUsername } from '@/shared/user.js'
 
+import { login } from '@/api/types/routes/auth'
+import { createMarioLap } from '@/api/types/routes/mario-lap'
+
 export default {
   name: 'home',
   components: {
@@ -59,6 +62,12 @@ export default {
   methods: {
     async createLobby() {
       const roomId = getRandomString(2)
+      // @todo login then create mario lap then store mario lap id
+      // in socket server? Maybe in room?
+
+      // await login({ username: this.playerUsername })
+      // await createMarioLap()
+
       await this.$socket.client.emit(
         'createRoom',
         { roomId, username: this.playerUsername },

@@ -1,3 +1,7 @@
+
+const ENV = process.env
+const REST_API_HOST = `${ENV.VUE_APP_API_PROTOCOL}${ENV.VUE_APP_API_HOST}:${ENV.VUE_APP_API_PORT}`
+
 module.exports = {
   transpileDependencies: [ "vuetify" ],
   chainWebpack: config => {
@@ -9,6 +13,13 @@ module.exports = {
     })
 
     config.plugins.delete('prefetch')
+  },
+  devServer: {
+    proxy: {
+      '^/api': {
+        target: REST_API_HOST,
+      },
+    }
   },
   css: {
     loaderOptions: {

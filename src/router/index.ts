@@ -1,30 +1,61 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import { VueConstructor } from 'vue'
+import Router, { RouteConfig } from 'vue-router'
+import Login from '../views/Login.vue'
+import auth from '@/middleware/auth'
 
-Vue.use(VueRouter)
-
-const routes = [
+export const routes = (): RouteConfig[] => [
   {
     path: '/',
+    name: 'login',
+    meta: {
+      title: 'Utilisateur',
+      anonymous: true,
+    },
+    component: Login,
+  },
+  {
+    path: '/home',
     name: 'home',
-    component: Home,
+    meta: {
+      title: 'Jouer',
+      anonymous: false,
+    },
+    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
   },
   {
     path: '/lobby',
     name: 'lobby',
-   component: () => import(/* webpackChunkName: "lobby" */ '../views/Lobby.vue'),
+    meta: {
+      title: 'Jouer',
+      anonymous: false,
+    },
+    component: () => import(/* webpackChunkName: "lobby" */ '../views/Lobby.vue'),
   },
   {
     path: '/join-room',
     name: 'join-room',
+    meta: {
+      title: 'Jouer',
+      anonymous: false,
+    },
     component: () => import(/* webpackChunkName: "join-room" */ '../views/JoinRoom.vue'),
   },
 ]
 
-const router = new VueRouter({
-  mode: 'history',
-  routes,
-})
+export const createRouter = (): Router => {
+  const router = new Router({
+    mode: 'history',
+  })
+  router.addRoutes(routes())
 
-export default router
+  return router
+}
+
+export default (vue: VueConstructor): Router => {
+  vue.use(Router)
+
+  const router = createRouter()
+  router.beforeEach(auth())
+
+  return router
+}

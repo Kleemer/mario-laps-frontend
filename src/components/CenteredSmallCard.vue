@@ -8,15 +8,15 @@
         <VBtn
           v-if="to"
           :to="to"
-          text
           color="primary"
           small
-          class="ml-0 mb-2">
+          class="ml-0 mb-2 white--text">
           <VIcon>mdi-chevron-left</VIcon>
-          Back {{ backLabel ? 'to' : '' }} {{ backLabel }}
+          Retour
         </VBtn>
         <VCard
           :width="450"
+          flat
           class="py-2 px-0">
           <VCardText>
             <slot />
@@ -35,6 +35,5 @@ import {
 @Component({ })
 export default class CenteredSmallCard extends Vue {
   @Prop([ Object, String ]) public readonly to!: string | { name: string }
-  @Prop(String) public readonly backLabel!: string
 }
 </script>

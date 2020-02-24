@@ -1,12 +1,6 @@
 <template>
   <CenteredSmallCard>
-    <VCardTitle class="justify-center font-weight-bold headline">
-      Qui êtes-vous?
-    </VCardTitle>
-    <VCardText>
-      <PlayerUsernameSelector :value="playerUsername"/>
-    </VCardText>
-    <template v-if="playerUsername">
+    <template>
       <VCardTitle class="justify-center font-weight-bold headline">
         Que voulez-vous faire?
       </VCardTitle>
@@ -33,31 +27,19 @@
 
 <script>
 import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
-import PlayerUsernameSelector from '@/components/PlayerUsernameSelector.vue'
 
 import { getRandomString } from '@/shared/string.js'
-import { getPlayerUsername } from '@/shared/user.js'
-
-import { login, logout } from '@/api/types/routes/auth'
 import { createMarioLap } from '@/api/types/routes/mario-lap'
 
 export default {
   name: 'home',
   components: {
     CenteredSmallCard,
-    PlayerUsernameSelector,
   },
   computed: {
-    playerUsername() {
+    username() {
       return this.$store.state.player.username
     },
-  },
-  mounted() {
-    this.$store.dispatch('reset')
-    const playerUsername = getPlayerUsername()
-    if (playerUsername) {
-      this.$store.dispatch('setPlayerUsername', playerUsername)
-    }
   },
   methods: {
     async createLobby() {
@@ -66,12 +48,11 @@ export default {
       // in socket server? Maybe in room?
 
       try {
-        await login({ username: this.playerUsername })
         await createMarioLap()
 
         await this.$socket.client.emit(
           'createRoom',
-          { roomId, username: this.playerUsername },
+          { roomId, username: this.username },
           (response) => this.onResponse(response),
         )
       } catch (err) {
@@ -80,12 +61,7 @@ export default {
       }
     },
     async joinRoom() {
-      try {
-        await login({ username: this.playerUsername })
-        this.$router.push('join-room')
-      } catch (err) {
-        console.log('Something went wrong')
-      }
+      this.$router.push('join-room')
     },
     onResponse(response) {
       this.$store.dispatch('setRoomId', response.id)

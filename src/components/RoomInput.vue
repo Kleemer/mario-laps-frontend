@@ -4,15 +4,14 @@
       <VTextField
         v-model="roomId"
         @input="onInput"
-        label="Room ID"
-        class="uppercase"
+        class="uppercase display-4 pt-4 room-input"
         :error-messages="errorMessages"
         maxlength="2"
         autofocus
         @keyup.enter="joinRoom"
         />
     </VCardText>
-    <VCardText class="text-center pb-0">      
+    <VCardText class="text-center pb-0">
       <VBtn
         depressed
         color="primary"
@@ -71,3 +70,15 @@ export default class RoomInput extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.room-input.v-text-field {
+  font-weight: 600;
+  &::v-deep .v-text-field__slot {
+    > input {
+      max-height: 96px;
+      text-align: center;
+    }
+  }
+}
+</style>

@@ -15,6 +15,7 @@ const state = (): RootState => ({
   player: {
     id: null,
     username: null,
+    avatar: null,
   },
   roomId: null,
 })

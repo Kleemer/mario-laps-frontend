@@ -20,14 +20,15 @@ export interface Props {
 }
 
 @Component({ })
-export default class PlayerUsernameSelector extends Vue {
+export default class UsernameSelector extends Vue {
   @Prop(String) public readonly value!: Props['value']
 
+  // @todo use API user list
   private items: string[] = [ 'Ouzt', 'Alves', 'Nathou', 'Yass' ]
 
   private onChange(username: string) {
-    this.$store.dispatch('setPlayerUsername', username)
     localStorage.setItem('username', username)
+    this.$emit('input', username)
   }
 }
 </script>

@@ -12,6 +12,7 @@
     "@fortawesome/fontawesome-free": "^5.8.2",
     "@mdi/font": "^4.8.95",
     "core-js": "^3.4.3",
+    "js-cookie": "^2.2.1",
     "roboto-fontface": "*",
     "socket.io-client": "^2.3.0",
     "vue": "^2.6.10",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.8.3",
     "@types/jest": "^24.0.19",
+    "@types/js-cookie": "^2.2.4",
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-typescript": "^4.1.0",
     "@vue/cli-plugin-unit-jest": "^4.1.0",

@@ -2,6 +2,7 @@
   <VApp>
     <VContent>
       <div class="h-full">
+        <TopToolbar />
         <RouterView />
       </div>
     </VContent>
@@ -11,7 +12,7 @@
 <script lang="ts">
 import Vue, { CreateElement, VNode } from 'vue'
 import { VApp } from 'vuetify/lib'
-
+import TopToolbar from '@/components/TopToolbar.vue'
 /**
  * This component is loaded only once and is never re-rendered.
  * Use it to register components that cannot be destroyed.
@@ -19,6 +20,9 @@ import { VApp } from 'vuetify/lib'
  */
 export default Vue.extend({
   name: 'AppContainer',
+  components: {
+    TopToolbar,
+  },
   sockets: {
     connect(event) {
       console.log('socket connected', this.$socket.client.id)

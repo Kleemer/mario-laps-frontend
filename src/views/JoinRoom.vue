@@ -1,7 +1,7 @@
 <template>
   <CenteredSmallCard to="/">
     <VCardTitle class="justify-center font-weight-bold headline">
-      Rejoindre un Mario Lap
+      Entrez le code:
     </VCardTitle>
     <VCardText>
       <RoomInput/>

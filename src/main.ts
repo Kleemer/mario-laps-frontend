@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import AppContainer from './AppContainer.vue'
-import router from './router'
+import initRouter from './router'
 import initStore from './store'
 import vuetify from './plugins/vuetify'
 import initSocketIo from './plugins/socket-io'
@@ -9,6 +9,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
 
 initSocketIo(Vue)
 const store = initStore(Vue)
+const router = initRouter(Vue)
 
 Vue.config.productionTip = false
 

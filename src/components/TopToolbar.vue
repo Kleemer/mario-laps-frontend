@@ -4,6 +4,7 @@
       {{ title }}
     </VToolbarTitle>
     <VSpacer/>
+    <div class="pr-2">{{ username }}</div>
     <VAvatar color="grey" size="36">
       <VIcon v-if="!avatar" class="white--text">mdi-account</VIcon>
       <VImg v-else :src="avatar"/>
@@ -19,6 +20,10 @@ export default class TopToolbar extends Vue {
 
   private get title() {
     return this.$route.meta?.title || 'Mario Laps'
+  }
+
+  private get username() {
+    return this.$store.state.player?.username || 'Guest'
   }
 
   private get avatar() {

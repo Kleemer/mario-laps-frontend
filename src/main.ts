@@ -9,7 +9,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
 
 initSocketIo(Vue)
 const store = initStore(Vue)
-const router = initRouter(Vue)
+const router = initRouter(Vue, store)
 
 Vue.config.productionTip = false
 

@@ -2,6 +2,8 @@ import { VueConstructor } from 'vue'
 import Router, { RouteConfig } from 'vue-router'
 import Login from '../views/Login.vue'
 import auth from '@/middleware/auth'
+import { Store } from 'vuex'
+import { RootState } from '@/store'
 
 export const routes = (): RouteConfig[] => [
   {
@@ -51,11 +53,11 @@ export const createRouter = (): Router => {
   return router
 }
 
-export default (vue: VueConstructor): Router => {
+export default (vue: VueConstructor, store: Store<RootState>): Router => {
   vue.use(Router)
 
   const router = createRouter()
-  router.beforeEach(auth())
+  router.beforeEach(auth(store))
 
   return router
 }

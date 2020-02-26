@@ -24,7 +24,7 @@ export default class UsernameSelector extends Vue {
   @Prop(String) public readonly value!: Props['value']
 
   // @todo use API user list
-  private items: string[] = [ 'Ouzt', 'Alves', 'Nathou', 'Yass' ]
+  private items: string[] = [ 'Ouzt', 'Pandalves', 'Nathou', 'Yass' ]
 
   private onChange(username: string) {
     localStorage.setItem('username', username)

@@ -7,6 +7,8 @@
       <VCardText class="text-center">
         <VBtn
           depressed
+          :disabled="isPending"
+          :loading="isPending"
           color="primary"
           @click="createLobby">
           Créer un Mario Lap
@@ -15,6 +17,7 @@
           ou
         </VCardText>
         <VBtn
+          :disabled="isPending"
           depressed
           color="primary"
           @click="joinRoom">
@@ -36,6 +39,9 @@ export default {
   components: {
     CenteredSmallCard,
   },
+  data: () => ({
+    isPending: false,
+  }),
   computed: {
     username() {
       return this.$store.state.player.username
@@ -44,10 +50,8 @@ export default {
   methods: {
     async createLobby() {
       const roomId = getRandomString(2)
-      // @todo login then create mario lap then store mario lap id
-      // in socket server? Maybe in room?
-
       try {
+        this.isPending = true
         await createMarioLap()
 
         await this.$socket.client.emit(
@@ -58,9 +62,11 @@ export default {
       } catch (err) {
         // @todo add snackbar
         console.log('Something went wrong')
+      } finally {
+        this.isPending = false
       }
     },
-    async joinRoom() {
+    joinRoom() {
       this.$router.push('join-room')
     },
     onResponse(response) {

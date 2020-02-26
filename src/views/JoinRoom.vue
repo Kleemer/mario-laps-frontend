@@ -1,11 +1,23 @@
 <template>
-  <CenteredSmallCard to="/">
+  <CenteredSmallCard>
     <VCardTitle class="justify-center font-weight-bold headline">
       Entrez le code:
     </VCardTitle>
     <VCardText>
       <RoomInput/>
     </VCardText>
+    <VCardActions>
+      <VSpacer/>
+      <VBtn
+        class="caption"
+        color="transparent"
+        depressed
+        small
+        @click="onCancel">
+        Annuler
+      </VBtn>
+      <VSpacer/>
+    </VCardActions>
   </CenteredSmallCard>
 </template>
 
@@ -28,6 +40,11 @@ export default {
     } else {
       this.$router.replace({ name: 'home' })
     }
+  },
+  methods: {
+    onCancel() {
+      this.$router.push('home')
+    },
   },
 }
 </script>

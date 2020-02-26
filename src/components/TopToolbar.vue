@@ -1,5 +1,5 @@
 <template>
-  <VToolbar flat>
+  <VToolbar flat color="transparent">
     <VToolbarTitle class="pt-2 display-2 font-weight-bold">
       {{ title }}
     </VToolbarTitle>

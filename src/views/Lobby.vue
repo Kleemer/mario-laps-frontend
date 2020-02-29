@@ -8,13 +8,12 @@
         {{ roomId }}
       </div>
       <VSpacer />
-      <!-- @todo if not host -->
       <VBtn
-        color="primary"
+        color="error"
         depressed
+        icon
         @click="leaveRoom">
-        Quitter
-        <VIcon right>mdi-exit-to-app</VIcon>
+        <VIcon right>mdi-close</VIcon>
       </VBtn>
     </VCardTitle>
     <VCardText class="text-center py-0">
@@ -27,6 +26,19 @@
         </VRow>
       </VContainer>
     </VCardText>
+    <VCardActions>
+      <VSpacer/>
+      <VBtn
+        v-if="isHost"
+        color="primary"
+        depressed>
+        Lancer
+      </VBtn>
+      <div v-else class="caption">
+        En attente de l'hôte...
+      </div>
+      <VSpacer/>
+    </VCardActions>
   </CenteredSmallCard>
 </template>
 
@@ -41,8 +53,8 @@ export default {
     UserCard,
   },
   computed: {
-    player() {
-      return this.$store.state.player
+    isHost() {
+      return this.$store.state.room.hostId === this.$store.state.player.id
     },
     roomId() {
       return this.$store.state.roomId

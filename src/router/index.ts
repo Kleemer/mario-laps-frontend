@@ -4,6 +4,7 @@ import Login from '../views/Login.vue'
 import auth from '@/middleware/auth'
 import { Store } from 'vuex'
 import { RootState } from '@/store'
+import GameLayout from '@/components/layouts/GameLayout.vue'
 
 export const routes = (): RouteConfig[] => [
   {
@@ -25,6 +26,15 @@ export const routes = (): RouteConfig[] => [
     component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
   },
   {
+    path: '/join-room',
+    name: 'join-room',
+    meta: {
+      title: 'Jouer',
+      anonymous: false,
+    },
+    component: () => import(/* webpackChunkName: "join-room" */ '../views/JoinRoom.vue'),
+  },
+  {
     path: '/lobby',
     name: 'lobby',
     meta: {
@@ -34,13 +44,14 @@ export const routes = (): RouteConfig[] => [
     component: () => import(/* webpackChunkName: "lobby" */ '../views/Lobby.vue'),
   },
   {
-    path: '/join-room',
-    name: 'join-room',
+    path: '/game',
+    name: 'game',
     meta: {
       title: 'Jouer',
-      anonymous: false,
+      anonymous: true,
+      layout: GameLayout,
     },
-    component: () => import(/* webpackChunkName: "join-room" */ '../views/JoinRoom.vue'),
+    component: () => import(/* webpackChunkName: "game" */ '../views/Game.vue'),
   },
 ]
 

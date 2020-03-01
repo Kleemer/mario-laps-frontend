@@ -1,47 +1,65 @@
-<template>
-  <VApp>
-    <VContent>
-      <div class="h-full">
-        <TopToolbar />
-        <RouterView />
-      </div>
-    </VContent>
-  </VApp>
-</template>
-
 <script lang="ts">
-import Vue, { CreateElement, VNode } from 'vue'
+import { Component, Vue } from 'vue-property-decorator'
 import { VApp } from 'vuetify/lib'
-import TopToolbar from '@/components/TopToolbar.vue'
-/**
- * This component is loaded only once and is never re-rendered.
- * Use it to register components that cannot be destroyed.
- * DO NOT PASS PROPS
- */
-export default Vue.extend({
-  name: 'AppContainer',
-  components: {
-    TopToolbar,
-  },
-  sockets: {
-    connect(event) {
-      console.log('socket connected', this.$socket.client.id)
-      this.$store.dispatch('setPlayerId', this.$socket.client.id)
-    },
-    addUser(event) {
-      console.log('addUser', event)
-      this.$store.dispatch('room/addUser', event)
-    },
-    removeUser(event) {
-      console.log('removeUser', event)
-      this.$store.dispatch('room/removeUser', event)
-    },
-    updateHostId(event) {
-      console.log('updateHostId', event)
-      this.$store.dispatch('room/setHostId', event)
-    },
-  },
-})
+import { Socket } from 'vue-socket.io-extended'
+import {
+  Component as ComponentType,
+  CreateElement,
+  VNode,
+} from 'vue'
+import DefaultLayout from '@/components/layouts/DefaultLayout.vue'
+
+@Component({ })
+export default class AppContainer extends Vue {
+  @Socket()
+  private connect() {
+    console.log('socket connected', this.$socket.client.id)
+    this.$store.dispatch('setPlayerId', this.$socket.client.id)
+  }
+
+  @Socket()
+  private addUser(event: any) {
+    console.log('addUser', event)
+    this.$store.dispatch('room/addUser', event)
+  }
+
+  @Socket()
+  private removeUser(event: any) {
+    console.log('removeUser', event)
+    this.$store.dispatch('room/removeUser', event)
+  }
+
+  @Socket()
+  private updateHostId(event: any) {
+    console.log('updateHostId', event)
+    this.$store.dispatch('room/setHostId', event)
+  }
+
+  public get layoutComponent(): ComponentType | null {
+    if (this.$route?.meta?.layout === false) {
+      return null
+    }
+
+    return this.$route?.meta?.layout || DefaultLayout
+  }
+
+  private render(h: CreateElement): VNode {
+    const { layoutComponent } = this
+
+    if (!layoutComponent) {
+      return h('RouterView')
+    }
+
+    return h(
+      layoutComponent,
+      {
+        scopedSlots: {
+          default: () => h('RouterView'),
+        },
+      },
+    )
+  }
+}
 </script>
 
 <style lang="scss">

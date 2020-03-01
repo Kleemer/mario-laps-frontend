@@ -16,7 +16,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component({ })
-export default class TopToolbar extends Vue {
+export default class DefaultToolbar extends Vue {
 
   private get title() {
     return this.$route.meta?.title || 'Mario Laps'

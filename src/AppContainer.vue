@@ -51,4 +51,11 @@ export default Vue.extend({
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.v-application--wrap {
+  align-items: center;
+}
+
+.v-content__wrap {
+  max-width: 500px !important;
+}
 </style>

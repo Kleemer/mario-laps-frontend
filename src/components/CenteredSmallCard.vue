@@ -1,5 +1,5 @@
 <template>
-  <VContainer class="fill-height">
+  <VContainer>
     <VRow
       class="fill-height"
       align="center"
@@ -15,7 +15,7 @@
           Retour
         </VBtn>
         <VCard
-          :width="450"
+          width="450"
           flat
           class="py-2 px-0">
           <VCardText>

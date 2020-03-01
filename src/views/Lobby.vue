@@ -13,7 +13,7 @@
         depressed
         icon
         @click="leaveRoom">
-        <VIcon right>mdi-close</VIcon>
+        <VIcon>mdi-close</VIcon>
       </VBtn>
     </VCardTitle>
     <VCardText class="text-center py-0">
@@ -57,7 +57,7 @@ export default {
       return this.$store.state.room.hostId === this.$store.state.player.id
     },
     roomId() {
-      return this.$store.state.roomId
+      return this.$store.state.room.id
     },
     hostId() {
       return this.$store.state.room.hostId
@@ -69,9 +69,8 @@ export default {
   methods: {
     leaveRoom() {
       this.$socket.client.emit('leaveRoom', this.roomId)
-      this.$store.dispatch('setRoomId', null)
-      this.$store.dispatch('reset')
-      this.$router.push('/')
+      this.$store.dispatch('room/reset')
+      this.$router.push('/home')
     },
   },
 }

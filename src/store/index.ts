@@ -8,7 +8,6 @@ import { User } from '@/types'
 
 export interface RootState {
   player: User | Record<string, any>
-  roomId: string | null
 }
 
 const state = (): RootState => ({
@@ -17,7 +16,6 @@ const state = (): RootState => ({
     username: null,
     avatar: null,
   },
-  roomId: null,
 })
 
 export const mutations: MutationTree<RootState> = {
@@ -31,9 +29,6 @@ export const mutations: MutationTree<RootState> = {
   setPlayerUsername(state, payload) {
     state.player.username = payload
   },
-  setRoomId(state, payload) {
-    state.roomId = payload
-  },
 }
 
 export const actions: ActionTree<RootState, RootState> = {
@@ -46,11 +41,7 @@ export const actions: ActionTree<RootState, RootState> = {
   setPlayerUsername({ commit }, payload) {
     commit('setPlayerUsername', payload)
   },
-  setRoomId({ commit, dispatch }, payload) {
-    commit('setRoomId', payload)
-    dispatch('room/setId', payload)
-  },
-  reset({ commit, dispatch }) {
+  reset({ commit }) {
     commit('reset')
     commit('room/reset')
   },

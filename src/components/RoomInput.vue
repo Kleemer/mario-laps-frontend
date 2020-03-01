@@ -64,7 +64,6 @@ export default class RoomInput extends Vue {
       return
     }
 
-    this.$store.dispatch('setRoomId', (response as Room).id)
     this.$store.dispatch('room/setRoom', response as Room)
     this.$router.replace({ name: 'lobby' })
   }

@@ -70,7 +70,6 @@ export default {
       this.$router.push('join-room')
     },
     onResponse(response) {
-      this.$store.dispatch('setRoomId', response.id)
       this.$store.dispatch('room/setRoom', response)
       this.$router.push('lobby')
     },

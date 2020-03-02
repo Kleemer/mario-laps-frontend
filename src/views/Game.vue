@@ -19,7 +19,9 @@
           bottomLabel="Rang"/>
       </VCol>
     </VRow>
-    <PositionGrid :selected="1"/>
+    <PositionGrid
+      :selected="positionGridValue"
+      @change="onChange"/>
   </div>
 </template>
 
@@ -37,10 +39,16 @@ export default {
   },
   data: () => ({
     isPending: false,
+    positionGridValue: 0,
   }),
   computed: {
     username() {
       return this.$store.state.player.username
+    },
+  },
+  methods: {
+    onChange(position) {
+      this.positionGridValue = position
     },
   },
 }

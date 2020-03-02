@@ -1,4 +1,8 @@
-import Vue from 'vue'
+import {
+  Component,
+  Prop,
+  Vue,
+} from 'vue-property-decorator'
 import { VCard, VRow, VCol } from 'vuetify/lib'
 import { PositionScoreTuple } from '@/shared/score'
 import PositionGridTile from './PositionGridTile'
@@ -12,62 +16,67 @@ const provideDefaultClass = (classes: any): any[] => {
   return [ classes, 'position-grid' ]
 }
 
-export default Vue.extend<Props>({
-  name: 'PositionGrid',
+@Component({ components: { VCard, VRow, VCol } })
+export default class PositionGrid extends Vue {
+  @Prop({ type: Number, default: 0 }) private readonly selected?: Props['selected']
 
-  functional: true,
+  private render(h: Function) {
+    const vnode = this.$vnode.data
 
-  props: {
-    selected: {
-      type: Number,
-      default: 0,
-    },
-  },
-
-  render(h, { data, props }) {
     return h(VCard, {
-      ...data,
-      class: provideDefaultClass(data.class),
+      class: provideDefaultClass(vnode?.class),
       props: { flat: true },
     },
     [
-      genFirstRow(h, props.selected),
-      genSecondRow(h, props.selected),
-      genThirdRow(h, props.selected),
+      this.genFirstRow(h, this.selected),
+      this.genSecondRow(h, this.selected),
+      this.genThirdRow(h, this.selected),
     ],
     )
-  },
-})
+  }
 
-const genTile = (h: Function, position: number, selected: boolean) => {
-  return h(VCol, {
-    props: { cols: 3 },
-  }, [
-    h(
-      PositionGridTile,
-      { props: { position, selected } },
-    ),
-  ])
-}
+  private genTile = (h: Function, position: number, selected: boolean) => {
+    return h(VCol, {
+      props: { cols: 3 },
+    }, [
+      h(
+        PositionGridTile,
+        {
+          props: { position, selected },
+          on: {
+            ...this.$listeners,
+            'input': (position: number) => {
+              this.onInput(position)
+            },
+          },
+        },
+      ),
+    ])
+  }
 
-const genRow = (h: Function, selected: Props['selected'], column: number) => {
-  const firstPosition = (column - 1) * 4 + 1
-  return h(VRow, {}, [
-    genTile(h, firstPosition, selected === firstPosition),
-    genTile(h, firstPosition + 1, selected === firstPosition + 1),
-    genTile(h, firstPosition + 2, selected === firstPosition + 2),
-    genTile(h, firstPosition + 3, selected === firstPosition + 3),
-  ])
-}
+  private genRow = (h: Function, selected: Props['selected'], column: number) => {
+    const firstPosition = (column - 1) * 4 + 1
+    return h(VRow, {}, [
+      this.genTile(h, firstPosition, selected === firstPosition),
+      this.genTile(h, firstPosition + 1, selected === firstPosition + 1),
+      this.genTile(h, firstPosition + 2, selected === firstPosition + 2),
+      this.genTile(h, firstPosition + 3, selected === firstPosition + 3),
+    ])
+  }
 
-const genFirstRow = (h: Function, selected: Props['selected']) => {
-  return genRow(h, selected, 1)
-}
+  private genFirstRow = (h: Function, selected: Props['selected']) => {
+    return this.genRow(h, selected, 1)
+  }
 
-const genSecondRow = (h: Function, selected: Props['selected']) => {
-  return genRow(h, selected, 2)
-}
+  private genSecondRow = (h: Function, selected: Props['selected']) => {
+    return this.genRow(h, selected, 2)
+  }
 
-const genThirdRow = (h: Function, selected: Props['selected']) => {
-  return genRow(h, selected, 3)
+  private genThirdRow = (h: Function, selected: Props['selected']) => {
+    return this.genRow(h, selected, 3)
+  }
+
+  private onInput(position: number) {
+    this.$emit('change', position)
+  }
 }

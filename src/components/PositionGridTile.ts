@@ -1,4 +1,8 @@
-import Vue from 'vue'
+import {
+  Component,
+  Prop,
+  Vue,
+} from 'vue-property-decorator'
 import { VCard, VImg } from 'vuetify/lib'
 import { PositionScoreTuple } from '@/shared/score'
 import './PositionGridTile.scss'
@@ -9,46 +13,43 @@ interface Props extends Record<string, any> {
 }
 
 const provideDefaultClass = (classes: any, selected: Props['selected']): any[] => {
-  return [ classes, 'position-grid-tile', selected ? 'info' : 'grey darken-3' ]
+  return [ classes, 'position-grid-tile', selected ? 'info' : 'blue-grey darken-4' ]
 }
 
 const provideClassImg = (selected: Props['selected']): any[] => {
   return [ 'position-grid-tile__image', { 'position-grid-tile__image--selected': selected } ]
 }
 
-export default Vue.extend<Props>({
-  name: 'PositionGridTile',
+@Component({ components: { VCard, VImg } })
+export default class PositionGridTile extends Vue {
+  @Prop(Number) private readonly position?: Props['position']
+  @Prop({ type: Boolean, default: false }) private readonly selected?: Props['selected']
 
-  functional: true,
+  private render(h: Function) {
+    const vnode = this.$vnode.data
 
-  props: {
-    position: {
-      type: Number,
-      required: true,
-    },
-    selected: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  render(h, { data, props }) {
     return h(VCard, {
-      ...data,
-      class: provideDefaultClass(data.class, props.selected),
+      class: provideDefaultClass(vnode?.class, this.selected),
       props: { flat: true },
+      on: {
+        ...this.$listeners,
+        'click': ($event: Event) => {
+          $event.stopPropagation()
+          this.$emit('input', this.position)
+        },
+      },
     },
     [
-      genImg(h, props.position, props.selected),
+      this.genImg(h, this.position, this.selected),
     ],
     )
-  },
-})
+  }
 
-const genImg = (h: Function, position: Props['position'], selected: Props['selected']) => {
-  const publicPath = process.env.BASE_URL
-  return h(VImg, {
-    class: provideClassImg(selected),
-    props: { src: `${publicPath}position/${position}.png`, contain: true },
-  })
+  private genImg = (h: Function, position: Props['position'], selected: Props['selected']) => {
+    const publicPath = process.env.BASE_URL
+    return h(VImg, {
+      class: provideClassImg(selected),
+      props: { src: `${publicPath}position/${position}.png`, contain: true },
+    })
+  }
 }

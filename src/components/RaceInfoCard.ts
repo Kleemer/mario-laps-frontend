@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { VCard, VCardText, VCardActions, VSpacer } from 'vuetify/lib'
-import { ScoreTuple } from '@/shared/score'
+import { PositionScoreTuple } from '@/shared/score'
 import { getRankState } from '@/shared/rank'
 import './RaceInfoCard.scss'
 
@@ -12,7 +12,7 @@ interface BadgeProps extends Record<string, any> {
 
 interface Props extends Record<string, any> {
   mainLabel: number;
-  topLabel: ScoreTuple[0] | ScoreTuple[1] | number;
+  topLabel: PositionScoreTuple[0] | PositionScoreTuple[1] | number;
   bottomLabel: string;
   rank: boolean;
   badge: BadgeProps;
@@ -79,7 +79,7 @@ export default Vue.extend<Props>({
     return h(VCard, {
       ...data,
       class: provideDefaultClass(data.class),
-      props,
+      props: { flat: true },
     }, [
       genTopLabel(h, props.topLabel, props.rank),
       genMainLabel(h, props.mainLabel, props.rank),

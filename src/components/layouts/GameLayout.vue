@@ -3,7 +3,7 @@
     <VContent>
       <div class="h-full">
         <!-- <GameToolbar /> -->
-        <div> The Game layout, you lose </div>
+        <div>Game layout</div>
         <RouterView />
       </div>
     </VContent>

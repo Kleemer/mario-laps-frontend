@@ -1,6 +1,6 @@
-export type ScoreTuple = [number, number]
+export type PositionScoreTuple = [number, number]
 
-export const scoreTable: ScoreTuple[] = [
+export const scoreTable: PositionScoreTuple[] = [
   [ 1, 15 ],
   [ 2, 12 ],
   [ 3, 10 ],

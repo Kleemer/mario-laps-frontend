@@ -2,7 +2,7 @@
   <CenteredSmallCard>
     <template>
       <VCardTitle class="justify-center font-weight-bold headline">
-        Que voulez-vous faire?
+        Que souhaitez-vous faire?
       </VCardTitle>
       <VCardText class="text-center">
         <VBtn
@@ -11,7 +11,7 @@
           :loading="isPending"
           color="primary"
           @click="createLobby">
-          Créer un Mario Lap
+          Créer
         </VBtn>
         <VCardText class="font-weight-medium">
           ou
@@ -21,7 +21,7 @@
           depressed
           color="primary"
           @click="joinRoom">
-          Rejoindre un Mario Lap
+          Rejoindre
         </VBtn>
       </VCardText>
     </template>

@@ -1,5 +1,5 @@
 import { DEFAULTS } from './constants'
-// import { JSONResponse } from './types'
+import { JSONResponse } from './types'
 // import mergeWith from 'lodash/fp/mergeWith'
 
 export const fetchAny = async (
@@ -15,10 +15,14 @@ export const fetchAny = async (
 export const fetchJson = async <T extends Record<string, any>>(
   request: RequestInfo,
   config?: RequestInit,
-): Promise<T> => {
+): Promise<JSONResponse<T>> => {
   const options = Object.assign({}, DEFAULTS, config)
   const response = await fetchAny(request, options)
-  const data = await response.json() as T
+  const json = await response.json()
 
-  return data
+  return {
+    data: json.data,
+    json,
+    request,
+  }
 }

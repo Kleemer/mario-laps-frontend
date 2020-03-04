@@ -42,6 +42,16 @@ const users: Route = {
 }
 
 /**
+ * @deprecated
+ * @see App\Http\Controllers\SessionController@index
+ */
+const activeSessions: Route = {
+  type: 'SessionPayload',
+  method: 'GET',
+  path: toPath('/sessions'),
+}
+
+/**
  * @see App\Http\Controllers\MarioLapController@store
  */
 const createMarioLap: Route = {
@@ -71,6 +81,7 @@ const createUserRace: RouteWithParams = {
 
 
 export const routes = {
+  activeSessions,
   createMarioLap,
   createRace,
   createUserRace,

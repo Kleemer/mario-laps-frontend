@@ -6,9 +6,6 @@ export interface ResponseBody<T> {
 
 export interface JSONResponse<T = Record<string, any>> {
   data: T | null;
-  status: number;
-  statusText: string;
-  ok: boolean;
   json: { data: T } | null;
   request: RequestInfo;
 }

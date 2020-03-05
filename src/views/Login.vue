@@ -27,7 +27,6 @@ import { getPlayerUsername } from '@/shared/user'
 import { getLoggedInCookie } from '@/shared/auth'
 
 import { login, logout } from '@/api/types/routes/auth'
-import { createMarioLap } from '@/api/types/routes/mario-lap'
 
 export default {
   name: 'home',

@@ -30,12 +30,15 @@
       <VSpacer/>
       <VBtn
         v-if="isHost"
+        :disabled="isPending"
+        :loading="isPending"
         color="primary"
-        depressed>
+        depressed
+        @click="onStart">
         Lancer
       </VBtn>
       <div v-else class="caption">
-        En attente de l'hôte...
+        {{ isPending ? 'Lancement de la partie...' : "En attente de l'hôte..." }}
       </div>
       <VSpacer/>
     </VCardActions>
@@ -46,12 +49,17 @@
 import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
 import UserCard from '@/components/UserCard.vue'
 
+import { createMarioLap } from '@/api/types/routes/mario-lap'
+
 export default {
   name: 'lobby',
   components: {
     CenteredSmallCard,
     UserCard,
   },
+  data: () => ({
+    isPending: false,
+  }),
   computed: {
     isHost() {
       return this.$store.state.room.hostId === this.$store.state.player.id
@@ -67,6 +75,20 @@ export default {
     },
   },
   methods: {
+    async onStart() {
+      try {
+        this.isPending = true
+        const marioLap = await createMarioLap()
+
+        this.$socket.client.emit('startGame', { roomId: this.roomId, marioLap })
+      } catch (err) {
+        console.log(err)
+        // @todo add snackbar
+        console.log('Something went wrong')
+      } finally {
+        this.isPending = false
+      }
+    },
     leaveRoom() {
       this.$socket.client.emit('leaveRoom', this.roomId)
       this.$store.dispatch('room/reset')

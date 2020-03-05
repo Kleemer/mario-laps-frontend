@@ -5,8 +5,8 @@ export interface ResponseBody<T> {
 }
 
 export interface JSONResponse<T = Record<string, any>> {
-  data: T | null;
-  json: { data: T } | null;
+  data: T;
+  json: { data: T };
   request: RequestInfo;
 }
 

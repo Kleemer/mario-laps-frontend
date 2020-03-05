@@ -43,30 +43,30 @@ const users: Route = {
 
 /**
  * @deprecated
- * @see App\Http\Controllers\SessionController@index
- */
-const activeSessions: Route = {
-  type: 'SessionPayload',
-  method: 'GET',
-  path: toPath('/sessions'),
-}
-
-/**
- * @see App\Http\Controllers\MarioLapController@store
+ * @see App\Http\Controllers\MarioLapController@index
  */
 const createMarioLap: Route = {
   type: 'MarioLapPayload',
   method: 'POST',
-  path: toPath('/mariolaps'),
+  path: toPath('/mario-laps'),
+}
+
+/**
+ * @see App\Http\Controllers\RoundController@store
+ */
+const createRound: Route = {
+  type: 'RoundPayload',
+  method: 'POST',
+  path: toPath('/rounds'),
 }
 
 /**
  * @see App\Http\Controllers\MarioLapRaceController@store
  */
 const createRace: RouteWithParams = {
-  type: 'MarioLapPayload',
+  type: 'RacePayload',
   method: 'POST',
-  path: (marioLapId: string) => toPath(`/mariolaps/${marioLapId}/races`),
+  path: (roundId: string) => toPath(`/rounds/${roundId}/races`),
 }
 
 
@@ -74,19 +74,20 @@ const createRace: RouteWithParams = {
  * @see App\Http\Controllers\UserRaceController@store
  */
 const createUserRace: RouteWithParams = {
-  type: 'MarioLapPayload',
+  type: 'UserRacePayload',
   method: 'POST',
   path: (raceId: string) => toPath(`/races/${raceId}`),
 }
 
 
 export const routes = {
-  activeSessions,
   createMarioLap,
   createRace,
+  createRound,
   createUserRace,
   login,
   logout,
   users,
 }
+
 export default routes

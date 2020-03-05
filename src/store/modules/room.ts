@@ -4,10 +4,16 @@ import {
 import { RootState } from '@/store'
 import { resetMixin } from '@/store/utils'
 
+interface User {
+  id: string
+  username: string
+  score?: number
+}
+
 export interface RoomState {
   id: string | null
   hostId: string | null
-  users: Array<Record<string, any>>
+  users: User[]
 }
 
 const state = (): RoomState => ({

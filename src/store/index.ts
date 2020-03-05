@@ -3,6 +3,7 @@ import Vuex, {
   Store, MutationTree, ActionTree, StoreOptions, ModuleTree,
 } from 'vuex'
 import room from './modules/room'
+import marioLap from './modules/mario-lap'
 import { resetMixin } from '@/store/utils'
 import { User } from '@/types'
 
@@ -44,10 +45,11 @@ export const actions: ActionTree<RootState, RootState> = {
   reset({ commit }) {
     commit('reset')
     commit('room/reset')
+    commit('marioLap/reset')
   },
 }
 
-export const modules: ModuleTree<RootState> = { room }
+export const modules: ModuleTree<RootState> = { room, marioLap }
 
 export default (vue: VueConstructor): Store<RootState> => {
   vue.use(Vuex)

@@ -19,6 +19,7 @@
     "object-literal-key-quotes": false,
     "no-shadowed-variable": false,
     "no-console": false,
-    "ban-types": false
+    "ban-types": false,
+    "forin": false
   }
 }

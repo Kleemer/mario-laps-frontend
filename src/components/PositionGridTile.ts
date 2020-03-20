@@ -10,10 +10,16 @@ import './PositionGridTile.scss'
 interface Props extends Record<string, any> {
   position?: PositionScoreTuple[0],
   selected?: boolean,
+  disabled?: boolean,
 }
 
-const provideDefaultClass = (classes: any, selected: Props['selected']): any[] => {
-  return [ classes, 'position-grid-tile', selected ? 'info' : 'blue-grey darken-4' ]
+const provideDefaultClass = (classes: any, selected: Props['selected'], disabled: Props['disabled']): any[] => {
+  return [
+    classes,
+    'position-grid-tile',
+    selected ? 'info' : 'blue-grey darken-4',
+    disabled && 'position-grid-tile--disabled',
+  ]
 }
 
 const provideClassImg = (selected: Props['selected']): any[] => {
@@ -24,20 +30,26 @@ const provideClassImg = (selected: Props['selected']): any[] => {
 export default class PositionGridTile extends Vue {
   @Prop(Number) private readonly position?: Props['position']
   @Prop({ type: Boolean, default: false }) private readonly selected?: Props['selected']
+  @Prop({ type: Boolean, default: false }) private readonly disabled?: Props['disabled']
 
   private render(h: Function) {
     const vnode = this.$vnode.data
 
+    const listeners = {
+      ...this.$listeners,
+    }
+
+    if (!this.disabled) {
+      listeners.click = ($event: Event) => {
+        $event.stopPropagation()
+        this.$emit('input', this.position)
+      }
+    }
+
     return h(VCard, {
-      class: provideDefaultClass(vnode?.class, this.selected),
+      class: provideDefaultClass(vnode?.class, this.selected, this.disabled),
       props: { flat: true },
-      on: {
-        ...this.$listeners,
-        'click': ($event: Event) => {
-          $event.stopPropagation()
-          this.$emit('input', this.position)
-        },
-      },
+      on: listeners,
     },
     [
       this.genImg(h, this.position, this.selected),

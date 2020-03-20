@@ -19,12 +19,12 @@
 </template>
 
 <script>
-import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
-import UsernameSelector from '@/components/UsernameSelector.vue'
+import CenteredSmallCard from '../components/CenteredSmallCard.vue'
+import UsernameSelector from '../components/UsernameSelector.vue'
 
-import { getRandomString } from '@/shared/string.js'
-import { getPlayerUsername } from '@/shared/user'
-import { getLoggedInCookie } from '@/shared/auth'
+import { getRandomString } from '@/shared/string'
+import { getPlayerUsername } from '../shared/user'
+import { getLoggedInCookie } from '../shared/auth'
 
 import { login, logout } from '@/api/types/routes/auth'
 
@@ -61,11 +61,7 @@ export default {
       }
     },
     goToNext() {
-      if (this.$route.params.nextUrl) {
-        this.$router.push(this.$route.params.nextUrl)
-      } else {
-        this.$router.push('home')
-      }
+      this.$router.push('home')
     },
   },
 }

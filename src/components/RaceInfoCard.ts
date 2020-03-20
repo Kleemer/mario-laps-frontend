@@ -4,18 +4,11 @@ import { PositionScoreTuple } from '@/shared/score'
 import { getRankState } from '@/shared/rank'
 import './RaceInfoCard.scss'
 
-interface BadgeProps extends Record<string, any> {
-  icon?: string,
-  value?: string,
-  color?: string,
-}
-
 interface Props extends Record<string, any> {
   mainLabel: number;
   topLabel: PositionScoreTuple[0] | PositionScoreTuple[1] | number;
   bottomLabel: string;
   rank: boolean;
-  badge: BadgeProps;
 }
 
 const provideDefaultClass = (classes: any): any[] => {
@@ -66,10 +59,6 @@ export default Vue.extend<Props>({
     rank: {
       type: Boolean,
       default: false,
-    },
-    badge: {
-      type: Object,
-      default: {},
     },
   },
 

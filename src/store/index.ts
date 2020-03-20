@@ -5,11 +5,7 @@ import Vuex, {
 import room from './modules/room'
 import marioLap from './modules/mario-lap'
 import { resetMixin } from '@/store/utils'
-import { User } from '@/types'
-
-export interface RootState {
-  player: User | Record<string, any>
-}
+import { RootState } from './types'
 
 const state = (): RootState => ({
   player: {
@@ -51,13 +47,15 @@ export const actions: ActionTree<RootState, RootState> = {
 
 export const modules: ModuleTree<RootState> = { room, marioLap }
 
+export const store: StoreOptions<RootState> = {
+  state,
+  mutations,
+  actions,
+  modules,
+}
+
 export default (vue: VueConstructor): Store<RootState> => {
   vue.use(Vuex)
 
-  return new Vuex.Store({
-    state,
-    mutations,
-    actions,
-    modules,
-  })
+  return new Vuex.Store<RootState>(store)
 }

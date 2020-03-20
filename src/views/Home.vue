@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
+import CenteredSmallCard from '../components/CenteredSmallCard.vue'
 
-import { getRandomString } from '@/shared/string.js'
+import { getRandomString } from '../shared/string.js'
 
 export default {
   name: 'home',

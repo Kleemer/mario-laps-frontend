@@ -42,6 +42,22 @@ export default class AppContainer extends Vue {
     this.$router.push('game')
   }
 
+  @Socket()
+  private endGame(event: any) {
+    console.log('endGame')
+    this.$store.dispatch('marioLap/reset')
+    this.$store.dispatch('room/reset')
+    this.$router.push('/home')
+    this.$socket.client.emit('leaveRoom', event)
+  }
+
+  @Socket()
+  private updateStore(
+    { action, data }: { action: string, data: Record<string, any>},
+  ) {
+    this.$store.dispatch(action, data)
+  }
+
   public get layoutComponent(): ComponentType | null {
     if (this.$route?.meta?.layout === false) {
       return null

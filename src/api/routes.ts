@@ -61,14 +61,13 @@ const createRound: Route = {
 }
 
 /**
- * @see App\Http\Controllers\MarioLapRaceController@store
+ * @see App\Http\Controllers\RoundRaceController@store
  */
 const createRace: RouteWithParams = {
   type: 'RacePayload',
   method: 'POST',
   path: (roundId: string) => toPath(`/rounds/${roundId}/races`),
 }
-
 
 /**
  * @see App\Http\Controllers\UserRaceController@store
@@ -79,6 +78,14 @@ const createUserRace: RouteWithParams = {
   path: (raceId: string) => toPath(`/races/${raceId}`),
 }
 
+/**
+ * @see App\Http\Controllers\RaceLapController@udpate
+ */
+const updateRaceLapSetting: RouteWithParams = {
+  type: 'UserRacePayload',
+  method: 'PATCH',
+  path: (raceId: string) => toPath(`/races/${raceId}/lap`),
+}
 
 export const routes = {
   createMarioLap,
@@ -87,6 +94,7 @@ export const routes = {
   createUserRace,
   login,
   logout,
+  updateRaceLapSetting,
   users,
 }
 

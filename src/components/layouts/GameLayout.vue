@@ -2,8 +2,7 @@
   <VApp>
     <VContent>
       <div class="h-full">
-        <!-- <GameToolbar /> -->
-        <div>Game layout</div>
+        <GameToolbar />
         <RouterView />
       </div>
     </VContent>

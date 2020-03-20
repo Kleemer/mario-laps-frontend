@@ -6,6 +6,10 @@
     opacity: 0 !important;
   }
 
+  &--disabled {
+    filter: invert(0.4);
+  }
+
   &__image {
     border-radius: 0px !important;
     width: 36px;

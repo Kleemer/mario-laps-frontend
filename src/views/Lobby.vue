@@ -80,7 +80,7 @@ export default {
         this.isPending = true
         const marioLap = await createMarioLap()
 
-        this.$socket.client.emit('startGame', { roomId: this.roomId, marioLap })
+        this.$socket.client.emit('startGame', marioLap)
       } catch (err) {
         console.log(err)
         // @todo add snackbar

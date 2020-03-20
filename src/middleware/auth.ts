@@ -2,7 +2,7 @@ import { NavigationGuard, Route } from 'vue-router'
 import { getLoggedInCookie } from '@/shared/auth'
 import { getPlayerUsername } from '@/shared/user'
 import { Store } from 'vuex'
-import { RootState } from '@/store'
+import { RootState } from '@/store/types'
 
 const loginRedirect = (next: Function, to: Route): void => next({
   name: 'login',

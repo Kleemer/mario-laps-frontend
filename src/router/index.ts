@@ -3,7 +3,7 @@ import Router, { RouteConfig } from 'vue-router'
 import Login from '../views/Login.vue'
 import auth from '@/middleware/auth'
 import { Store } from 'vuex'
-import { RootState } from '@/store'
+import { RootState } from '@/store/types'
 import GameLayout from '@/components/layouts/GameLayout.vue'
 
 export const routes = (): RouteConfig[] => [

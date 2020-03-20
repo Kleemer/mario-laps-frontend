@@ -10,6 +10,7 @@ import './PositionGrid.scss'
 
 interface Props extends Record<string, any> {
   selected?: PositionScoreTuple[0],
+  disabled?: Array<PositionScoreTuple[0]>,
 }
 
 const provideDefaultClass = (classes: any): any[] => {
@@ -19,6 +20,7 @@ const provideDefaultClass = (classes: any): any[] => {
 @Component({ components: { VCard, VRow, VCol } })
 export default class PositionGrid extends Vue {
   @Prop({ type: Number, default: 0 }) private readonly selected?: Props['selected']
+  @Prop({ type: Array, default: () => [] }) private readonly disabled?: Props['disabled']
 
   private render(h: Function) {
     const vnode = this.$vnode.data
@@ -42,7 +44,7 @@ export default class PositionGrid extends Vue {
       h(
         PositionGridTile,
         {
-          props: { position, selected },
+          props: { position, selected, disabled: this.disabled?.includes(position) },
           on: {
             ...this.$listeners,
             'input': (position: number) => {

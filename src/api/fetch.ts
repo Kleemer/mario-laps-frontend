@@ -16,7 +16,6 @@ export const fetchJson = async <T extends Record<string, any>>(
   request: RequestInfo,
   config?: RequestInit,
 ): Promise<JSONResponse<T>> => {
-  console.log('fetchJson')
   const options = Object.assign({}, DEFAULTS, config)
   const response = await fetchAny(request, options)
   const json = await response.json()

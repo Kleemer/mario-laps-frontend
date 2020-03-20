@@ -1,20 +1,9 @@
 import {
   Module, MutationTree, ActionTree,
 } from 'vuex'
-import { RootState } from '@/store'
 import { resetMixin } from '@/store/utils'
-
-interface User {
-  id: string
-  username: string
-  score?: number
-}
-
-export interface RoomState {
-  id: string | null
-  hostId: string | null
-  users: User[]
-}
+import { RootState } from '@/store/types'
+import { RoomState } from './types'
 
 const state = (): RoomState => ({
   id: null,

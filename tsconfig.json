@@ -1,33 +1,36 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "strict": true,
-    "jsx": "preserve",
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "esModuleInterop": true,
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
     "baseUrl": ".",
-    "rootDir": "./src",
-    "types": [
-      "webpack-env",
-      "jest",
-      "vuetify"
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "jsx": "preserve",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
     ],
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "paths": {
       "@/*": [
         "src/*"
       ]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    "sourceMap": true,
+    "strict": true,
+    "target": "ESNext",
+    "typeRoots": [
+      "./src/types",
+      "./node_modules/@types",
+    ],
+    "types": [
+      "jest",
+      "vuetify",
+      "webpack-env"
+    ],
   },
   "include": [
     "src/**/*.ts",

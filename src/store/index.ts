@@ -4,6 +4,7 @@ import Vuex, {
 } from 'vuex'
 import room from './modules/room'
 import marioLap from './modules/mario-lap'
+import ui from './modules/ui'
 import { resetMixin } from '@/store/utils'
 import { RootState } from './types'
 
@@ -45,7 +46,11 @@ export const actions: ActionTree<RootState, RootState> = {
   },
 }
 
-export const modules: ModuleTree<RootState> = { room, marioLap }
+export const modules: ModuleTree<RootState> = {
+  room,
+  marioLap,
+  ui,
+}
 
 export const store: StoreOptions<RootState> = {
   state,

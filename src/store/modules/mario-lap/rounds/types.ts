@@ -1,4 +1,4 @@
-import { Race } from '@/store/modules/race/types'
+import { Race } from './races/types'
 
 export interface Round {
   id: string

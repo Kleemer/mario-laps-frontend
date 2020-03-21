@@ -6,10 +6,10 @@
     <VToolbarTitle class="font-weight-bold">
       <VLayout column wrap class="mx-3">
         <VRow class="body-2" cols="12">
-          Manche 1
+          Manche {{ roundOrder }}
         </VRow>
         <VRow class="headline font-weight-bold" cols="12">
-          Course 1
+          Course {{ raceOrder }}
         </VRow>
       </VLayout>
     </VToolbarTitle>
@@ -73,35 +73,45 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { Round } from '../store/modules/round/types'
-import { Race } from '../store/modules/race/types'
+import { State, Getter, namespace } from 'vuex-class'
+
+import { RoomState } from '@/store/modules/room/types'
+import { Round } from '@/store/modules/mario-lap/rounds/types'
+import { Race } from '@/store/modules/mario-lap/rounds/races/types'
+import { RootState } from '@/store/types'
+
+const RoomModule = namespace('room')
+const RoundModule = namespace('marioLap/rounds')
+const RaceModule = namespace('marioLap/rounds/races')
 
 @Component({ })
 export default class GameToolbar extends Vue {
   private isEndDialogVisible: boolean = false
 
-  private get round(): Round {
-    return this.$store.state.marioLap.rounds?.length || 1
+  @State private readonly player!: RootState['player']
+  @RoomModule.State('id') private readonly roomId!: RoomState['id']
+  @RoomModule.State private readonly hostId!: RoomState['hostId']
+  @RoundModule.Getter('last') private readonly round!: Round
+  @RaceModule.Getter('last') private readonly race!: Race
+
+  private get roundOrder(): number {
+    return this.round.order
   }
 
-  private get race(): Race {
-    return this.$store.state.marioLap.rounds?.races?.length || 1
-  }
-
-  private get roomId(): string {
-    return this.$store.state.room.id
+  private get raceOrder(): number {
+    return this.race.order || 1
   }
 
   private get username(): string {
-    return this.$store.state.player?.username || 'Guest'
+    return this.player?.username || 'Guest'
   }
 
   private get avatar(): string | null {
-    return this.$store.state.player?.avatar || null
+    return this.player?.avatar || null
   }
 
   private get isHost(): boolean {
-    return this.$store.state.room.hostId === this.$store.state.player.id
+    return this.hostId === this.player.id
   }
 
   private onNewRound(): void {

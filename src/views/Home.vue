@@ -50,7 +50,9 @@ export default class Home extends Vue {
     await this.$socket.client.emit(
       'createRoom',
       { roomId, username: this.username },
-      (response: Record<string, any>) => this.onResponse(response),
+      (response: Record<string, any>): void => {
+        this.onResponse(response)
+      },
     )
   }
 

@@ -86,9 +86,8 @@ export default class Lobby extends Vue {
 
       this.$socket.client.emit('startGame', marioLap)
     } catch (err) {
-      console.log(err)
       // @todo add snackbar
-      console.log('Something went wrong')
+      console.log('Something went wrong', err)
     } finally {
       this.isPending = false
     }

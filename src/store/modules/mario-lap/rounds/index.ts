@@ -4,7 +4,7 @@ import {
 } from 'vuex'
 import { resetMixin } from '@/store/utils'
 import { RootState } from '@/store/types'
-import RaceModule from '@/store/modules/race'
+import races from './races'
 import { RoundState, Round } from './types'
 
 const state = (): RoundState => ({
@@ -19,8 +19,9 @@ const mutations: MutationTree<RoundState> = {
 }
 
 const actions: ActionTree<RoundState, RootState>  = {
-  reset({ commit }) {
+  reset({ commit, dispatch }) {
     commit('reset')
+    dispatch('races/reset')
   },
   setRounds({ dispatch }, payload) {
     payload.forEach((round: Omit<Round, 'order'>) => dispatch('addRound', round))
@@ -33,7 +34,7 @@ const actions: ActionTree<RoundState, RootState>  = {
 }
 
 const modules: ModuleTree<RootState> = {
-  races: { ...RaceModule },
+  races,
 }
 
 export const getters: GetterTree<RoundState, RootState> = {

@@ -47,8 +47,21 @@ export default class AppContainer extends Vue {
     console.log('endGame')
     this.$store.dispatch('marioLap/reset')
     this.$store.dispatch('room/reset')
+    this.$store.dispatch('ui/game/reset')
     this.$router.push('/home')
     this.$socket.client.emit('leaveRoom', event)
+  }
+
+  @Socket()
+  private nextRound(event: any) {
+    console.log('nextRound')
+    this.$store.dispatch('ui/game/reset')
+  }
+
+  @Socket()
+  private nextRace(event: any) {
+    console.log('nextRace')
+    this.$store.dispatch('ui/game/reset')
   }
 
   @Socket()

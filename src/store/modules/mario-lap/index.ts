@@ -2,7 +2,7 @@ import {
   Module, MutationTree, ActionTree, ModuleTree,
 } from 'vuex'
 import { resetMixin } from '@/store/utils'
-import RoundModule from '@/store/modules/round'
+import rounds from './rounds'
 import { RootState } from '@/store/types'
 import { MarioLapState } from './types'
 
@@ -18,8 +18,9 @@ const mutations: MutationTree<MarioLapState> = {
 }
 
 const actions: ActionTree<MarioLapState, RootState>  = {
-  reset({ commit }) {
+  reset({ commit, dispatch }) {
     commit('reset')
+    dispatch('rounds/reset')
   },
   setMarioLap({ dispatch }, { id, rounds }) {
     dispatch('setId', id)
@@ -31,7 +32,7 @@ const actions: ActionTree<MarioLapState, RootState>  = {
 }
 
 const modules: ModuleTree<RootState> = {
-  rounds: { ...RoundModule },
+  rounds,
 }
 
 const marioLapModule: Module<MarioLapState, RootState> = {

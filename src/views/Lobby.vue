@@ -45,55 +45,59 @@
   </CenteredSmallCard>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import {
+  State,
+  Getter,
+  namespace,
+} from 'vuex-class'
+
 import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
 import UserCard from '@/components/UserCard.vue'
-
+import { RoomState } from '@/store/modules/room/types'
 import { createMarioLap } from '@/api/types/routes/mario-lap'
+import { RootState } from '@/store/types'
 
-export default {
-  name: 'lobby',
+const RoomModule = namespace('room')
+
+@Component({
   components: {
     CenteredSmallCard,
     UserCard,
   },
-  data: () => ({
-    isPending: false,
-  }),
-  computed: {
-    isHost() {
-      return this.$store.state.room.hostId === this.$store.state.player.id
-    },
-    roomId() {
-      return this.$store.state.room.id
-    },
-    hostId() {
-      return this.$store.state.room.hostId
-    },
-    users() {
-      return this.$store.state.room.users
-    },
-  },
-  methods: {
-    async onStart() {
-      try {
-        this.isPending = true
-        const marioLap = await createMarioLap()
+})
+export default class Lobby extends Vue {
+  private isPending: boolean = false
 
-        this.$socket.client.emit('startGame', marioLap)
-      } catch (err) {
-        console.log(err)
-        // @todo add snackbar
-        console.log('Something went wrong')
-      } finally {
-        this.isPending = false
-      }
-    },
-    leaveRoom() {
-      this.$socket.client.emit('leaveRoom', this.roomId)
-      this.$store.dispatch('room/reset')
-      this.$router.push('/home')
-    },
-  },
+  @State private readonly player!: RootState['player']
+  @RoomModule.State('id') private readonly roomId!: RoomState['id']
+  @RoomModule.State private readonly hostId!: RoomState['hostId']
+  @RoomModule.State private readonly users!: RoomState['users']
+
+  private get isHost(): boolean {
+    return this.hostId === this.player.id
+  }
+
+  private async onStart(): Promise<void> {
+    try {
+      this.isPending = true
+      const marioLap = await createMarioLap()
+
+      this.$socket.client.emit('startGame', marioLap)
+    } catch (err) {
+      console.log(err)
+      // @todo add snackbar
+      console.log('Something went wrong')
+    } finally {
+      this.isPending = false
+    }
+  }
+
+  private leaveRoom(): void {
+    this.$socket.client.emit('leaveRoom', this.roomId)
+    this.$store.dispatch('room/reset')
+    this.$router.push('/home')
+  }
 }
 </script>

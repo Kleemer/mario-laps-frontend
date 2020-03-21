@@ -21,20 +21,21 @@
   </CenteredSmallCard>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+
 import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
 import RoomInput from '@/components/RoomInput.vue'
 
-export default {
-  name: 'join-room',
+@Component({
   components: {
     CenteredSmallCard,
     RoomInput,
   },
-  methods: {
-    onCancel() {
-      this.$router.push('home')
-    },
-  },
+})
+export default class JoinRoom extends Vue {
+  private onCancel(): void {
+    this.$router.push('home')
+  }
 }
 </script>

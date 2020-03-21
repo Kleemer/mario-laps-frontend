@@ -25,37 +25,42 @@
   </CenteredSmallCard>
 </template>
 
-<script>
-import CenteredSmallCard from '../components/CenteredSmallCard.vue'
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import { State } from 'vuex-class'
 
-import { getRandomString } from '../shared/string.js'
+import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
 
-export default {
-  name: 'home',
+import { getRandomString } from '@/shared/string'
+
+@Component({
   components: {
     CenteredSmallCard,
   },
-  computed: {
-    username() {
-      return this.$store.state.player.username
-    },
-  },
-  methods: {
-    async createLobby() {
-      const roomId = getRandomString(2)
-      await this.$socket.client.emit(
-        'createRoom',
-        { roomId, username: this.username },
-        (response) => this.onResponse(response),
-      )
-    },
-    joinRoom() {
-      this.$router.push('join-room')
-    },
-    onResponse(response) {
-      this.$store.dispatch('room/setRoom', response)
-      this.$router.push('lobby')
-    },
-  },
+})
+export default class Home extends Vue {
+  @State private readonly player!: Record<string, any>
+
+  private get username(): string {
+    return this.player.username
+  }
+
+  private async createLobby(): Promise<void> {
+    const roomId = getRandomString(2)
+    await this.$socket.client.emit(
+      'createRoom',
+      { roomId, username: this.username },
+      (response: Record<string, any>) => this.onResponse(response),
+    )
+  }
+
+  private joinRoom(): void {
+    this.$router.push('join-room')
+  }
+
+  private onResponse(response: Record<string, any>): void {
+    this.$store.dispatch('room/setRoom', response)
+    this.$router.push('lobby')
+  }
 }
 </script>

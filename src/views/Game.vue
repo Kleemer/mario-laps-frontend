@@ -53,22 +53,21 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { State, Getter, namespace } from 'vuex-class'
+
 import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
 import RaceInfoCard from '@/components/RaceInfoCard'
 import PositionGrid from '@/components/PositionGrid'
 
 import { first, last } from '@/shared/array'
-import { Round } from '../store/modules/round/types'
-import { Race } from '../store/modules/race/types'
-import { createUserRace } from '../api/types/routes/user-race'
-import { updateRaceLapSetting } from '../api/types/routes/race-lap'
+import { Round } from '@/store/modules/round/types'
+import { Race } from '@/store/modules/race/types'
+import { createUserRace } from '@/api/types/routes/user-race'
+import { updateRaceLapSetting } from '@/api/types/routes/race-lap'
+import { RootState } from '@/store/types'
+import { RoomState } from '@/store/modules/room/types'
 
-import {
-  State,
-  Getter,
-  namespace,
-} from 'vuex-class'
-
+const RoomModule = namespace('room')
 const RoundModule = namespace('marioLap/rounds')
 const RaceModule = namespace('marioLap/rounds/races')
 
@@ -84,7 +83,8 @@ export default class Game extends Vue {
   private hasSelected: boolean = false
   private positionGridValue: number = 0
 
-  @State private readonly player!: Record<string, any>
+  @State private readonly player!: RootState['player']
+  @RoomModule.State private readonly hostId!: RoomState['hostId']
   @RoundModule.Getter('last') private readonly round!: Round
   @RaceModule.Getter('last') private readonly race!: Race
 
@@ -93,7 +93,7 @@ export default class Game extends Vue {
   }
 
   private get isHost(): boolean {
-    return this.$store.state.room.hostId === this.player.id
+    return this.hostId === this.player.id
   }
 
   private get withLap(): boolean {

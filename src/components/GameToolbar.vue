@@ -138,6 +138,7 @@ export default class GameToolbar extends Vue {
       console.trace('Something went wrong', err)
     } finally {
       this.isPending = false
+      this.isEndDialogVisible = false
     }
   }
 

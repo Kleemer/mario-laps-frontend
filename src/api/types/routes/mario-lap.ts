@@ -1,5 +1,5 @@
 import { ResponseBody } from '@/api/types'
-import { Data as RoundData } from './round'
+import { Data as RoundData, normalizeRound } from './round'
 import { fetchJson } from '@/api'
 import routes from '@/api/routes'
 
@@ -8,7 +8,7 @@ export type MarioLapResponse = ResponseBody<Data>
 export interface Data {
   id: string;
   rounds: RoundData[];
-  created_at: string;
+  createdAt: string;
 }
 
 export const createMarioLap = async (config?: RequestInit) => {
@@ -20,8 +20,15 @@ export const createMarioLap = async (config?: RequestInit) => {
     },
   )
 
-  return data
-  // @todo do something with response
+  return normalizeMarioLap(data)
+}
+
+export const normalizeMarioLap = (dataMarioLap: any): Data => {
+  return {
+    id: dataMarioLap?.id,
+    rounds: dataMarioLap?.rounds?.map((dataRound: any) => normalizeRound(dataRound)),
+    createdAt: dataMarioLap?.created_at,
+  }
 }
 
 export default createMarioLap

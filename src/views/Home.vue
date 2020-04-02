@@ -1,27 +1,25 @@
 <template>
   <CenteredSmallCard>
-    <template>
-      <VCardTitle class="justify-center font-weight-bold headline">
-        Que souhaitez-vous faire?
-      </VCardTitle>
-      <VCardText class="text-center">
-        <VBtn
-          depressed
-          color="primary"
-          @click="createLobby">
-          Créer
-        </VBtn>
-        <VCardText class="font-weight-medium">
-          ou
-        </VCardText>
-        <VBtn
-          depressed
-          color="primary"
-          @click="joinRoom">
-          Rejoindre
-        </VBtn>
+    <VCardTitle class="justify-center font-weight-bold headline">
+      Que souhaitez-vous faire?
+    </VCardTitle>
+    <VCardText class="text-center">
+      <VBtn
+        depressed
+        color="primary"
+        @click="createLobby">
+        Créer
+      </VBtn>
+      <VCardText class="font-weight-medium">
+        ou
       </VCardText>
-    </template>
+      <VBtn
+        depressed
+        color="primary"
+        @click="joinRoom">
+        Rejoindre
+      </VBtn>
+    </VCardText>
   </CenteredSmallCard>
 </template>
 

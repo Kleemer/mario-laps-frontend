@@ -52,6 +52,8 @@
           </VCardTitle>
           <VCardText class="text-center">
             <VBtn
+              :disabled="isPending"
+              :loading="isPending"
               depressed
               class="mb-2 black--text"
               color="white"
@@ -59,6 +61,8 @@
               Nouvelle manche
             </VBtn>
             <VBtn
+              :disabled="isPending"
+              :loading="isPending"
               depressed
               color="error"
               @click="onEnd">
@@ -79,18 +83,23 @@ import { RoomState } from '@/store/modules/room/types'
 import { Round } from '@/store/modules/mario-lap/rounds/types'
 import { Race } from '@/store/modules/mario-lap/rounds/races/types'
 import { RootState } from '@/store/types'
+import createRound from '@/api/types/routes/round'
+import { MarioLapState } from '@/store/modules/mario-lap/types'
 
 const RoomModule = namespace('room')
+const MarioLapModule = namespace('marioLap')
 const RoundModule = namespace('marioLap/rounds')
 const RaceModule = namespace('marioLap/rounds/races')
 
 @Component({ })
 export default class GameToolbar extends Vue {
+  private isPending: boolean = false
   private isEndDialogVisible: boolean = false
 
   @State private readonly player!: RootState['player']
   @RoomModule.State('id') private readonly roomId!: RoomState['id']
   @RoomModule.State private readonly hostId!: RoomState['hostId']
+  @MarioLapModule.State('id') private readonly marioLapId!: MarioLapState['id']
   @RoundModule.Getter('last') private readonly round!: Round
   @RaceModule.Getter('last') private readonly race!: Race
 
@@ -114,8 +123,22 @@ export default class GameToolbar extends Vue {
     return this.hostId === this.player.id
   }
 
-  private onNewRound(): void {
-    console.log('new round')
+  private async onNewRound(): Promise<void> {
+    try {
+      this.isPending = true
+      const nextRound = await createRound(this.marioLapId!)
+
+      this.$socket.client.emit('updateStore', {
+        action: 'marioLap/rounds/addRound',
+        data: nextRound,
+      })
+
+      this.$socket.client.emit('nextRound')
+    } catch (err) {
+      console.trace('Something went wrong', err)
+    } finally {
+      this.isPending = false
+    }
   }
 
   private onEnd(): void {

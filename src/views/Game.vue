@@ -128,7 +128,12 @@ export default class Game extends Vue {
   }
 
   private get positionsSelected(): number[] {
-    return this.race.users.map(({ position }) => position)
+    const positionsSelected = this.race.users.map(({ position }) => position)
+    if (positionsSelected.includes(this.position)) {
+      this.setPosition(0)
+    }
+
+    return positionsSelected
   }
 
 

@@ -71,9 +71,8 @@ import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
 import RaceInfoCard from '@/components/RaceInfoCard'
 import PositionGrid from '@/components/PositionGrid'
 
-import { first, last } from '@/shared/array'
-import { Round } from '@/store/modules/mario-lap/rounds/types'
-import { Race } from '@/store/modules/mario-lap/rounds/races/types'
+import { Round } from '@/store/modules/rounds/types'
+import { Race } from '@/store/modules/races/types'
 import { createRace } from '@/api/types/routes/race'
 import { createUserRace } from '@/api/types/routes/user-race'
 import { updateRaceLapSetting } from '@/api/types/routes/race-lap'
@@ -84,8 +83,8 @@ import { scoreTable, PositionScoreTuple } from '@/shared/score'
 
 const GameModule = namespace('ui/game')
 const RoomModule = namespace('room')
-const RoundModule = namespace('marioLap/rounds')
-const RaceModule = namespace('marioLap/rounds/races')
+const RoundModule = namespace('rounds')
+const RaceModule = namespace('races')
 
 @Component({
   components: {
@@ -154,7 +153,7 @@ export default class Game extends Vue {
       )
 
       this.$socket.client.emit('updateStore', {
-        action: 'marioLap/rounds/races/addRaceUsers',
+        action: 'races/addRaceUsers',
         data: {
           roundId: this.round.id,
           raceId: this.race.id,
@@ -179,7 +178,7 @@ export default class Game extends Vue {
       )
 
       this.$socket.client.emit('updateStore', {
-        action: 'marioLap/rounds/races/updateRace',
+        action: 'races/updateRace',
         data: {
           roundId: this.round.id,
           raceId: this.race.id,
@@ -200,7 +199,7 @@ export default class Game extends Vue {
       const nextRace = await createRace(this.round.id)
 
       this.$socket.client.emit('updateStore', {
-        action: 'marioLap/rounds/races/addRace',
+        action: 'races/addRace',
         data: nextRace,
       })
 

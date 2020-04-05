@@ -8,12 +8,14 @@ import { RaceState, Race } from './types'
 
 const state = (): RaceState => ({
   races: {},
+  raceList: [],
 })
 
 const mutations: MutationTree<RaceState> = {
   ...resetMixin(state),
   addRace: (state, payload: Race) => {
     Vue.set(state.races, payload.id, payload)
+    state.raceList.push(payload.id)
   },
   updateRace: (state, { raceId, data }) => {
     const race: Race | undefined = state.races[raceId]

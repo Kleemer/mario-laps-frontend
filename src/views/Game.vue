@@ -105,10 +105,10 @@ export default class Game extends Vue {
   @GameModule.State private readonly submitted!: GameState['submitted']
 
   @State private readonly player!: RootState['player']
-  @RaceModule.Getter('last') private readonly race!: Race
+  @RaceModule.Getter('current') private readonly race!: Race
   @RoomModule.State private readonly hostId!: RoomState['hostId']
   @RoomModule.State('users') private readonly roomUsers!: RoomState['users']
-  @RoundModule.Getter('last') private readonly round!: Round
+  @RoundModule.Getter('current') private readonly round!: Round
 
   private get username(): string {
     return this.player.username

@@ -7,7 +7,6 @@ export interface Race {
   id: string
   users: User[]
   withLap: boolean
-  order: number
 }
 
 export interface RaceState {

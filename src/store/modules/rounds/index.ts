@@ -6,6 +6,7 @@ import { resetMixin } from '@/store/utils'
 import { RootState } from '@/store/types'
 import { RoundState, Round } from './types'
 import { Data as RoundData } from '@/api/types/routes/round'
+import { last } from '@/shared/array'
 
 const state = (): RoundState => ({
   rounds: {},
@@ -28,24 +29,20 @@ const actions: ActionTree<RoundState, RootState>  = {
   setRounds({ dispatch }, payload) {
     payload.forEach((round: RoundData) => dispatch('addRound', round))
   },
-  addRound({ commit, dispatch, state }, payload: RoundData) {
-    const order: number = Object.values(state.rounds).length + 1
+  addRound({ commit, dispatch }, payload: RoundData) {
     commit('addRound', {
       id: payload.id,
       races: payload.races.map(({ id }) => id),
-      order,
     })
     dispatch('races/setRaces', payload.races, { root: true })
   },
 }
 
 export const getters: GetterTree<RoundState, RootState> = {
-  last: (state) => {
-    const rounds = Object.values(state.rounds)
-    const orders = rounds.map(({ order }) => order)
-    const maxOrder = Math.max(...orders)
+  current: (state) => {
+    const lastRoundId = last(state.roundList)
 
-    return rounds.find(({ order }) => order === maxOrder) || null
+    return state.rounds[lastRoundId]
   },
 }
 

@@ -37,13 +37,12 @@ const actions: ActionTree<RaceState, RootState>  = {
   },
   setRaces({ commit, dispatch }, payload) {
     commit('addRaceList')
-    payload.forEach((race: Omit<Race, 'order'>) => dispatch('addRace', race))
+    payload.forEach((race: Race) => dispatch('addRace', race))
   },
-  addRace({ commit, state }, payload: Omit<Race, 'order'>) {
-    const order: number = Object.values(state.races).length + 1
-    commit('addRace', { ...payload, order })
+  addRace({ commit }, payload: Race) {
+    commit('addRace', payload)
   },
-  updateRace({ commit }, payload: Omit<Race, 'order'>) {
+  updateRace({ commit }, payload: Race) {
     commit('updateRace', payload)
   },
   addRaceUsers({ commit }, { raceId, users }) {
@@ -55,12 +54,10 @@ const actions: ActionTree<RaceState, RootState>  = {
 }
 
 export const getters: GetterTree<RaceState, RootState> = {
-  last: (state) => {
-    const races = Object.values(state.races)
-    const orders = races.map(({ order }) => order)
-    const maxOrder = Math.max(...orders)
+  current: (state) => {
+    const lastRaceId = last(last(state.raceList))
 
-    return races.find(({ order }) => order === maxOrder) || null
+    return state.races[lastRaceId]
   },
 }
 

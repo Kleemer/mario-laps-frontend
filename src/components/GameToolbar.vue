@@ -79,11 +79,12 @@ import { Component, Vue } from 'vue-property-decorator'
 import { State, Getter, namespace } from 'vuex-class'
 
 import { RoomState } from '@/store/modules/room/types'
-import { Round } from '@/store/modules/rounds/types'
-import { Race } from '@/store/modules/races/types'
+import { RoundState } from '@/store/modules/rounds/types'
+import { RaceState } from '@/store/modules/races/types'
 import { RootState } from '@/store/types'
 import createRound from '@/api/types/routes/round'
 import { MarioLapState } from '@/store/modules/mario-lap/types'
+import { last } from '@/shared/array'
 
 const RoomModule = namespace('room')
 const MarioLapModule = namespace('marioLap')
@@ -97,17 +98,17 @@ export default class GameToolbar extends Vue {
 
   @State private readonly player!: RootState['player']
   @MarioLapModule.State('id') private readonly marioLapId!: MarioLapState['id']
-  @RaceModule.Getter('last') private readonly race!: Race
+  @RaceModule.State private readonly raceList!: RaceState['raceList']
   @RoomModule.State private readonly hostId!: RoomState['hostId']
   @RoomModule.State('id') private readonly roomId!: RoomState['id']
-  @RoundModule.Getter('last') private readonly round!: Round
+  @RoundModule.State private readonly roundList!: RoundState['roundList']
 
   private get roundOrder(): number {
-    return this.round.order
+    return this.roundList.length
   }
 
   private get raceOrder(): number {
-    return this.race.order || 1
+    return last(this.raceList).length
   }
 
   private get username(): string {

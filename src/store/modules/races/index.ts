@@ -5,6 +5,7 @@ import {
 import { resetMixin } from '@/store/utils'
 import { RootState } from '@/store/types'
 import { RaceState, Race } from './types'
+import { last } from '@/shared/array'
 
 const state = (): RaceState => ({
   races: {},
@@ -15,7 +16,10 @@ const mutations: MutationTree<RaceState> = {
   ...resetMixin(state),
   addRace: (state, payload: Race) => {
     Vue.set(state.races, payload.id, payload)
-    state.raceList.push(payload.id)
+    last(state.raceList).push(payload.id)
+  },
+  addRaceList: (state) => {
+    state.raceList.push([])
   },
   updateRace: (state, { raceId, data }) => {
     const race: Race | undefined = state.races[raceId]
@@ -31,7 +35,8 @@ const actions: ActionTree<RaceState, RootState>  = {
   reset({ commit }) {
     commit('reset')
   },
-  setRaces({ dispatch }, payload) {
+  setRaces({ commit, dispatch }, payload) {
+    commit('addRaceList')
     payload.forEach((race: Omit<Race, 'order'>) => dispatch('addRace', race))
   },
   addRace({ commit, state }, payload: Omit<Race, 'order'>) {

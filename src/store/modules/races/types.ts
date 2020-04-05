@@ -12,5 +12,5 @@ export interface Race {
 
 export interface RaceState {
   races: Record<Race['id'], Race>,
-  raceList: Array<Race['id']>
+  raceList: Array<Array<Race['id']>>
 }

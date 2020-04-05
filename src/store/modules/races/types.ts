@@ -1,5 +1,6 @@
 export interface User {
   id: string
+  user_id: string
   position: number
 }
 

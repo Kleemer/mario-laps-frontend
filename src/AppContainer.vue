@@ -14,7 +14,7 @@ export default class AppContainer extends Vue {
   @Socket()
   private connect() {
     console.log('socket connected', this.$socket.client.id)
-    this.$store.dispatch('setPlayerId', this.$socket.client.id)
+    this.$store.dispatch('setSocketId', this.$socket.client.id)
   }
 
   @Socket()

@@ -14,3 +14,13 @@ export const scoreTable: PositionScoreTuple[] = [
   [ 11, 2 ],
   [ 12, 1 ],
 ]
+
+export const getScore = (position: PositionScoreTuple[0]): number => {
+  const score = scoreTable.find((tuple) => tuple[0] === position)
+
+  if (!score) {
+    return 0
+  }
+
+  return score[1]
+}

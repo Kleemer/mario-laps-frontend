@@ -97,6 +97,7 @@ export default class GameToolbar extends Vue {
   private isEndDialogVisible: boolean = false
 
   @State private readonly player!: RootState['player']
+  @State private readonly socketId!: RootState['socketId']
   @MarioLapModule.State('id') private readonly marioLapId!: MarioLapState['id']
   @RaceModule.State private readonly raceList!: RaceState['raceList']
   @RoomModule.State private readonly hostId!: RoomState['hostId']
@@ -120,7 +121,7 @@ export default class GameToolbar extends Vue {
   }
 
   private get isHost(): boolean {
-    return this.hostId === this.player.id
+    return this.hostId === this.socketId
   }
 
   private async onNewRound(): Promise<void> {

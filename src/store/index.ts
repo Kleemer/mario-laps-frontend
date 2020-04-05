@@ -16,6 +16,7 @@ const state = (): RootState => ({
     username: null,
     avatar: null,
   },
+  socketId: null,
 })
 
 export const mutations: MutationTree<RootState> = {
@@ -29,6 +30,9 @@ export const mutations: MutationTree<RootState> = {
   setPlayerUsername(state, payload) {
     state.player.username = payload
   },
+  setSocketId(state, payload) {
+    state.socketId = payload
+  },
 }
 
 export const actions: ActionTree<RootState, RootState> = {
@@ -40,6 +44,9 @@ export const actions: ActionTree<RootState, RootState> = {
   },
   setPlayerUsername({ commit }, payload) {
     commit('setPlayerUsername', payload)
+  },
+  setSocketId({ commit }, payload) {
+    commit('setSocketId', payload)
   },
   reset({ commit }) {
     commit('reset')

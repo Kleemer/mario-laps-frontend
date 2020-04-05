@@ -42,6 +42,7 @@ export default class Login extends Vue {
 
   private mounted(): void {
     this.$store.dispatch('reset')
+    this.$store.dispatch('setSocketId', this.$socket.client.id)
     this.username = getPlayerUsername()
     if (getLoggedInCookie()) {
       this.goToNext()

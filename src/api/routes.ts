@@ -30,6 +30,15 @@ const logout: Route = {
   path: toPath('/auth/logout'),
 }
 
+/**
+ * @see App\Http\Controllers\AuthController@logout
+ */
+const me: Route = {
+  type: 'MetPayload',
+  method: 'GET',
+  path: toPath('/auth/me'),
+}
+
 
 /**
  * @deprecated
@@ -94,6 +103,7 @@ export const routes = {
   createUserRace,
   login,
   logout,
+  me,
   updateRaceLapSetting,
   users,
 }

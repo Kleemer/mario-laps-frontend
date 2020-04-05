@@ -3,7 +3,8 @@
     <VRow>
       <VCol cols="4">
         <RaceInfoCard
-          :mainLabel="10"
+          :topLabel="addedScore"
+          :mainLabel="currentScore"
           bottomLabel="Score"/>
       </VCol>
       <VCol cols="4">
@@ -79,7 +80,7 @@ import { updateRaceLapSetting } from '@/api/types/routes/race-lap'
 import { RootState } from '@/store/types'
 import { RoomState } from '@/store/modules/room/types'
 import { GameState } from '@/store/modules/ui/game/types'
-import { scoreTable, PositionScoreTuple } from '@/shared/score'
+import { scoreTable, PositionScoreTuple, getScore } from '@/shared/score'
 
 const GameModule = namespace('ui/game')
 const RoomModule = namespace('room')
@@ -105,7 +106,9 @@ export default class Game extends Vue {
   @GameModule.State private readonly submitted!: GameState['submitted']
 
   @State private readonly player!: RootState['player']
+  @State private readonly socketId!: RootState['socketId']
   @RaceModule.Getter('current') private readonly race!: Race
+  @RaceModule.State private readonly races!: Race[]
   @RoomModule.State private readonly hostId!: RoomState['hostId']
   @RoomModule.State('users') private readonly roomUsers!: RoomState['users']
   @RoundModule.Getter('current') private readonly round!: Round
@@ -115,11 +118,27 @@ export default class Game extends Vue {
   }
 
   private get isHost(): boolean {
-    return this.hostId === this.player.id
+    return this.hostId === this.socketId
   }
 
   private get withLap(): boolean {
     return this.race.withLap
+  }
+
+  private get addedScore(): number {
+    return getScore(this.position)
+  }
+
+  private get currentScore(): number {
+    return Object.values(this.races).reduce((result, { users }) => {
+      const user = users.find(({ user_id }) => user_id === this.player.id)
+
+      if (!user) {
+        return result
+      }
+
+      return result + getScore(user.position)
+    }, 0)
   }
 
   private get allPositions(): number[] {

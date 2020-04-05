@@ -1,6 +1,5 @@
 import { DEFAULTS } from './constants'
 import { JSONResponse } from './types'
-// import mergeWith from 'lodash/fp/mergeWith'
 
 export const fetchAny = async (
   request: RequestInfo,

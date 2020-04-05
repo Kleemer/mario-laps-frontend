@@ -70,13 +70,13 @@ const RoomModule = namespace('room')
 export default class Lobby extends Vue {
   private isPending: boolean = false
 
-  @State private readonly player!: RootState['player']
+  @State private readonly socketId!: RootState['socketId']
   @RoomModule.State('id') private readonly roomId!: RoomState['id']
   @RoomModule.State private readonly hostId!: RoomState['hostId']
   @RoomModule.State private readonly users!: RoomState['users']
 
   private get isHost(): boolean {
-    return this.hostId === this.player.id
+    return this.hostId === this.socketId
   }
 
   private async onStart(): Promise<void> {

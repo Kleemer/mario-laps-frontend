@@ -85,7 +85,8 @@ import {
   getRaceScore,
   getUserScore,
   scoreTable,
-  PositionScoreTuple,
+  Position,
+  Score,
 } from '@/shared/score'
 
 const GameModule = namespace('ui/game')
@@ -93,7 +94,7 @@ const RoomModule = namespace('room')
 const RoundModule = namespace('rounds')
 const RaceModule = namespace('races')
 
-type UserScoreTuple = [string, number]
+type UserScoreTuple = [string, Score]
 
 @Component({
   components: {
@@ -133,7 +134,7 @@ export default class Game extends Vue {
     return this.race.withLap
   }
 
-  private get addedScore(): number {
+  private get addedScore(): Score {
     const raceArray = Object.values(this.races)
     if (raceArray.length < 2) {
       return 0
@@ -143,7 +144,7 @@ export default class Game extends Vue {
     return getRaceScore(previousRace, this.player.id)
   }
 
-  private get currentScore(): number {
+  private get currentScore(): Score {
     return getUserScore(this.races, this.player.id)
   }
 
@@ -174,11 +175,11 @@ export default class Game extends Vue {
     return sortedUserScoreTuples.findIndex((tuple) => tuple[0] === this.player.id) + 1
   }
 
-  private get allPositions(): number[] {
-    return scoreTable.map((scoreTuple): PositionScoreTuple[0] => scoreTuple[0])
+  private get allPositions(): Position[] {
+    return scoreTable.map((scoreTuple): Position => scoreTuple[0])
   }
 
-  private get positionsSelected(): number[] {
+  private get positionsSelected(): Position[] {
     const positionsSelected = this.race.users.map(({ position }) => position)
     if (positionsSelected.includes(this.position)) {
       this.setPosition(0)
@@ -192,7 +193,7 @@ export default class Game extends Vue {
     return this.race.users.length === this.roomUsers.length
   }
 
-  private onChange(position: number): void {
+  private onChange(position: Position): void {
     this.setPosition(position)
   }
 

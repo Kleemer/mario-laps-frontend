@@ -1,6 +1,8 @@
 import { Race } from '@/store/modules/races/types'
 
-export type PositionScoreTuple = [number, number]
+export type Position = number
+export type Score = number
+export type PositionScoreTuple = [Position, Score]
 
 export const scoreTable: PositionScoreTuple[] = [
   [ 1, 15 ],
@@ -17,7 +19,7 @@ export const scoreTable: PositionScoreTuple[] = [
   [ 12, 1 ],
 ]
 
-export const getScore = (position: PositionScoreTuple[0]): number => {
+export const getScore = (position: Position): Score => {
   const score = scoreTable.find((tuple) => tuple[0] === position)
 
   if (!score) {
@@ -27,7 +29,7 @@ export const getScore = (position: PositionScoreTuple[0]): number => {
   return score[1]
 }
 
-export const getRaceScore = (race: Race, userId: string): number => {
+export const getRaceScore = (race: Race, userId: string): Score => {
   const user = race.users.find(({ user_id }) => user_id === userId)
 
   if (!user) {
@@ -37,7 +39,7 @@ export const getRaceScore = (race: Race, userId: string): number => {
   return getScore(user.position)
 }
 
-export const getUserScore = (races: Race[], userId: string): number => {
+export const getUserScore = (races: Race[], userId: string): Score => {
   return Object.values(races).reduce((result, race) => {
     return result + getRaceScore(race, userId)
   }, 0)

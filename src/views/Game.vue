@@ -69,8 +69,8 @@ import { Component, Vue } from 'vue-property-decorator'
 import { Action, Getter, State, namespace } from 'vuex-class'
 
 import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
-import RaceInfoCard from '@/components/RaceInfoCard'
-import PositionGrid from '@/components/PositionGrid'
+import RaceInfoCard from '@/components/game/RaceInfoCard'
+import PositionGrid from '@/components/game/PositionGrid'
 
 import { Round } from '@/store/modules/rounds/types'
 import { Race } from '@/store/modules/races/types'
@@ -92,6 +92,8 @@ const GameModule = namespace('ui/game')
 const RoomModule = namespace('room')
 const RoundModule = namespace('rounds')
 const RaceModule = namespace('races')
+
+type UserScoreTuple = [string, number]
 
 @Component({
   components: {
@@ -148,22 +150,24 @@ export default class Game extends Vue {
   private get rank(): number {
     const userRaces = Object.values(this.races).map(({ users }) => users)
 
-    const userIds = userRaces.reduce(
-      (acc, race) => acc.concat(race.map((user) => user.user_id)),
-      []
+    const userIds: string[] = userRaces.reduce(
+      (acc: string[], race) => acc.concat(race.map((user) => user.user_id)),
+      [],
     )
 
     const uniqueUserIds = [...new Set(userIds)]
 
-    const userScoreTuples = uniqueUserIds.reduce(
-      (acc, userId) => {
+    const userScoreTuples: UserScoreTuple[] = uniqueUserIds.reduce(
+      (acc: UserScoreTuple[], userId) => {
         acc.push([userId, getUserScore(this.races, userId)])
         return acc
       },
-      []
+      [],
     )
 
-    const sortScoreTupleFn = (a, b) => a[1] < b[1] ? 1 : a[1] === b[1] ? 0 : -1
+    const sortScoreTupleFn = (a: UserScoreTuple, b: UserScoreTuple) => {
+      return a[1] < b[1] ? 1 : a[1] === b[1] ? 0 : -1
+    }
 
     const sortedUserScoreTuples = userScoreTuples.sort(sortScoreTupleFn)
 

@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import GameToolbar from '@/components/GameToolbar.vue'
+import GameToolbar from '@/components/game/GameToolbar.vue'
 
 @Component({ components: { GameToolbar } })
 export default class DefaultLayout extends Vue {

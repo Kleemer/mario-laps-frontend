@@ -15,7 +15,7 @@
       </VCol>
       <VCol cols="4">
         <RaceInfoCard
-          :mainLabel="0"
+          :mainLabel="rank"
           rank
           bottomLabel="Rang"/>
       </VCol>
@@ -80,7 +80,13 @@ import { updateRaceLapSetting } from '@/api/types/routes/race-lap'
 import { RootState } from '@/store/types'
 import { RoomState } from '@/store/modules/room/types'
 import { GameState } from '@/store/modules/ui/game/types'
-import { scoreTable, PositionScoreTuple, getScore } from '@/shared/score'
+import {
+  getScore,
+  getRaceScore,
+  getUserScore,
+  scoreTable,
+  PositionScoreTuple,
+} from '@/shared/score'
 
 const GameModule = namespace('ui/game')
 const RoomModule = namespace('room')
@@ -126,19 +132,42 @@ export default class Game extends Vue {
   }
 
   private get addedScore(): number {
-    return getScore(this.position)
+    const raceArray = Object.values(this.races)
+    if (raceArray.length < 2) {
+      return 0
+    }
+
+    const previousRace = raceArray[raceArray.length - 2]
+    return getRaceScore(previousRace, this.player.id)
   }
 
   private get currentScore(): number {
-    return Object.values(this.races).reduce((result, { users }) => {
-      const user = users.find(({ user_id }) => user_id === this.player.id)
+    return getUserScore(this.races, this.player.id)
+  }
 
-      if (!user) {
-        return result
-      }
+  private get rank(): number {
+    const userRaces = Object.values(this.races).map(({ users }) => users)
 
-      return result + getScore(user.position)
-    }, 0)
+    const userIds = userRaces.reduce(
+      (acc, race) => acc.concat(race.map((user) => user.user_id)),
+      []
+    )
+
+    const uniqueUserIds = [...new Set(userIds)]
+
+    const userScoreTuples = uniqueUserIds.reduce(
+      (acc, userId) => {
+        acc.push([userId, getUserScore(this.races, userId)])
+        return acc
+      },
+      []
+    )
+
+    const sortScoreTupleFn = (a, b) => a[1] < b[1] ? 1 : a[1] === b[1] ? 0 : -1
+
+    const sortedUserScoreTuples = userScoreTuples.sort(sortScoreTupleFn)
+
+    return sortedUserScoreTuples.findIndex((tuple) => tuple[0] === this.player.id) + 1
   }
 
   private get allPositions(): number[] {

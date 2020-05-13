@@ -1,2 +1,10 @@
-export const toPath = (path?: string | null): string =>
-  '/api' + (path ? path.replace(/^(\w)/, '/$1') : '')
+import { REST_API_HOST } from './constants'
+
+export const toPath = (path?: string | null): string => {
+  let apiUrl = '/api'
+  if (process.env.NODE_ENV) {
+    apiUrl = REST_API_HOST
+  }
+
+  return apiUrl + (path ? path.replace(/^(\w)/, '/$1') : '')
+}

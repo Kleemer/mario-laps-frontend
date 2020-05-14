@@ -3,5 +3,10 @@
   "clean_urls": true,
   "routes": {
     "/**": "index.html"
+  },
+  "proxies": {
+    "/api/": {
+      "origin": "${VUE_APP_API_PROTOCOL}${VUE_APP_API_HOST}:${VUE_APP_API_PORT}"
+    }
   }
 }

@@ -10,5 +10,4 @@ export const DEFAULTS: Partial<RequestInit> = {
   credentials: 'include',
   headers: HEADERS,
   method: 'GET',
-  mode: 'same-origin',
 }

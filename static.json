@@ -6,7 +6,7 @@
   },
   "proxies": {
     "/api/": {
-      "origin": "${VUE_APP_API_PROTOCOL}${VUE_APP_API_HOST}:${VUE_APP_API_PORT}"
+      "origin": "http://159.65.208.143:3458"
     }
   }
 }

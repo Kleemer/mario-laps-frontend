@@ -20,7 +20,10 @@
       <!-- @todo -->
       <VContainer class="pa-0">
         <VRow>
-          <VCol v-for="user in users" :key="user.username" cols="6">
+          <VCol
+            v-for="user in users"
+            :key="user.username"
+            cols="6">
             <UserCard :user="user" />
           </VCol>
         </VRow>

@@ -108,8 +108,4 @@ export default class AppContainer extends Vue {
 .v-application--wrap {
   align-items: center;
 }
-
-.v-content__wrap {
-  max-width: 500px !important;
-}
 </style>

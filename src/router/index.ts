@@ -15,6 +15,7 @@ export const routes = (): RouteConfig[] => [
       anonymous: true,
     },
     component: Login,
+    alias: '/login',
   },
   {
     path: '/home',

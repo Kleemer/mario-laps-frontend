@@ -1,4 +1,3 @@
-
 const ENV = process.env
 const REST_API_HOST = `${ENV.VUE_APP_API_PROTOCOL}${ENV.VUE_APP_API_HOST}:${ENV.VUE_APP_API_PORT}`
 

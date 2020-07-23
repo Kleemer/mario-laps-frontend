@@ -1,28 +1,30 @@
 <template>
-  <VContainer>
+  <VContainer class="fill-height">
     <VRow
-      class="fill-height"
       align="center"
-      justify="center">
-      <div :style="{ width: '450px' }" class="text-left">
-        <VBtn
-          v-if="to"
-          :to="to"
-          color="primary"
-          small
-          class="ml-0 mb-2 white--text">
-          <VIcon>mdi-chevron-left</VIcon>
-          Retour
-        </VBtn>
-        <VCard
-          width="450"
-          flat
-          class="py-2 px-0">
-          <VCardText>
-            <slot />
-          </VCardText>
-        </VCard>
-      </div>
+      justify="center"
+      no-gutters>
+      <VCol :style="{ maxWidth: '450px' }" cols="12">
+        <div class="text-left">
+          <VBtn
+            v-if="to"
+            :to="to"
+            color="primary"
+            small
+            class="ml-0 mb-2 white--text">
+            <VIcon>mdi-chevron-left</VIcon>
+            Retour
+          </VBtn>
+          <VCard
+            width="450"
+            flat
+            class="py-2 px-0">
+            <VCardText>
+              <slot />
+            </VCardText>
+          </VCard>
+        </div>
+      </VCol>
     </VRow>
   </VContainer>
 </template>

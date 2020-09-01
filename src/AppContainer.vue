@@ -61,7 +61,7 @@ export default class AppContainer extends Vue {
   @Socket()
   private nextRace(event: any) {
     console.log('nextRace')
-    this.$store.dispatch('ui/game/reset')
+    this.$store.dispatch('ui/game/reset', [ 'laps '])
   }
 
   @Socket()

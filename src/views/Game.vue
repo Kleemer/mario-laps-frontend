@@ -3,14 +3,14 @@
     <VRow>
       <VCol cols="4">
         <RaceInfoCard
-          :topLabel="addedScore"
-          :mainLabel="currentScore"
+          :topLabel="score"
+          :mainLabel="totalScore"
           bottomLabel="Score"/>
       </VCol>
       <VCol cols="4">
         <RaceInfoCard
-          :topLabel="2"
-          :mainLabel="11"
+          :topLabel="laps"
+          :mainLabel="totalLaps"
           bottomLabel="Laps"/>
       </VCol>
       <VCol cols="4">
@@ -36,7 +36,7 @@
       </VCol>
     </VRow>
     <PositionGrid
-      :disabled="submitted ? allPositions : positionsSelected"
+      :disabled="submitted ? allPositions : selectedPositions"
       :selected="position"
       @change="onChange"/>
     <VRow
@@ -88,6 +88,7 @@ import {
   Position,
   Score,
 } from '@/shared/score'
+import { Lap, getLap } from '@/shared/lap'
 
 const GameModule = namespace('ui/game')
 const RoomModule = namespace('room')
@@ -109,8 +110,10 @@ export default class Game extends Vue {
   private isPendingToggle: boolean = false
 
   @GameModule.Action private readonly reset!: Function
+  @GameModule.Action private readonly setLaps!: Function
   @GameModule.Action private readonly setPosition!: Function
   @GameModule.Action private readonly setSubmitted!: Function
+  @GameModule.State('laps') private readonly totalLaps!: GameState['laps']
   @GameModule.State private readonly position!: GameState['position']
   @GameModule.State private readonly submitted!: GameState['submitted']
 
@@ -134,7 +137,7 @@ export default class Game extends Vue {
     return this.race.withLap
   }
 
-  private get addedScore(): Score {
+  private get score(): Score {
     const raceArray = Object.values(this.races)
     if (raceArray.length < 2) {
       return 0
@@ -144,12 +147,16 @@ export default class Game extends Vue {
     return getRaceScore(previousRace, this.player.id)
   }
 
-  private get currentScore(): Score {
+  private get totalScore(): Score {
     return getUserScore(this.races, this.player.id)
   }
 
+  private get laps(): Lap {
+    return getLap(Object.values(this.races), this.player.id, this.roomUsers.length)
+  }
+
   private get rank(): number {
-    const userRaces = Object.values(this.races).map(({ users }) => users)
+    const userRaces = Object.values(this.races).map((r) => r.users)
 
     const userIds: string[] = userRaces.reduce(
       (acc: string[], race) => acc.concat(race.map((user) => user.user_id)),
@@ -179,13 +186,13 @@ export default class Game extends Vue {
     return scoreTable.map((scoreTuple): Position => scoreTuple[0])
   }
 
-  private get positionsSelected(): Position[] {
-    const positionsSelected = this.race.users.map(({ position }) => position)
-    if (positionsSelected.includes(this.position)) {
+  private get selectedPositions(): Position[] {
+    const selectedPositions = this.race.users.map((u) => u.position)
+    if (selectedPositions.includes(this.position)) {
       this.setPosition(0)
     }
 
-    return positionsSelected
+    return selectedPositions
   }
 
 
@@ -257,6 +264,9 @@ export default class Game extends Vue {
       })
 
       this.$socket.client.emit('nextRace')
+      console.log('this.totalLaps', this.totalLaps)
+      console.log('this.laps', this.laps)
+      this.setLaps(this.totalLaps + this.laps)
     } catch (err) {
       console.trace('Something went wrong', err)
     } finally {

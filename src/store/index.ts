@@ -7,11 +7,12 @@ import marioLap from './modules/mario-lap'
 import rounds from './modules/rounds'
 import races from './modules/races'
 import ui from './modules/ui'
+import player from './modules/player'
 import { resetMixin } from '@/store/utils'
 import { RootState } from './types'
 
 const state = (): RootState => ({
-  player: {
+  user: {
     id: null,
     username: null,
     avatar: null,
@@ -22,13 +23,13 @@ const state = (): RootState => ({
 export const mutations: MutationTree<RootState> = {
   ...resetMixin(state),
   setPlayer(state, payload) {
-    state.player = payload
+    state.user = payload
   },
   setPlayerId(state, payload) {
-    state.player.id = payload
+    state.user.id = payload
   },
   setPlayerUsername(state, payload) {
-    state.player.username = payload
+    state.user.username = payload
   },
   setSocketId(state, payload) {
     state.socketId = payload
@@ -61,6 +62,7 @@ export const modules: ModuleTree<RootState> = {
   rounds,
   races,
   ui,
+  player,
 }
 
 export const store: StoreOptions<RootState> = {

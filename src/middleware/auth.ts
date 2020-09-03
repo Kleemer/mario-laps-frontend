@@ -19,7 +19,7 @@ const authMiddleware = (store: Store<RootState>): NavigationGuard => async (to, 
 
   const loggedIn = getLoggedInCookie() && username
 
-  if (loggedIn && !store.state.player.id) {
+  if (loggedIn && !store.state.user.id) {
     const user = await getMe()
     store.dispatch('setPlayerId', user.id)
   }

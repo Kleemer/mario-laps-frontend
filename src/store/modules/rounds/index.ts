@@ -32,7 +32,7 @@ const actions: ActionTree<RoundState, RootState>  = {
   addRound({ commit, dispatch }, payload: RoundData) {
     commit('addRound', {
       id: payload.id,
-      races: payload.races.map(({ id }) => id),
+      races: payload.races.map((e) => e.id),
     })
     dispatch('races/setRaces', payload.races, { root: true })
   },

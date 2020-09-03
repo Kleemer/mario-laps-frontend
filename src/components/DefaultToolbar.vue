@@ -36,11 +36,11 @@ export default class DefaultToolbar extends Vue {
   }
 
   private get username(): string {
-    return this.$store.state.player?.username || 'Guest'
+    return this.$store.state.user?.username || 'Guest'
   }
 
   private get avatar(): string | null {
-    return this.$store.state.player?.avatar || null
+    return this.$store.state.user?.avatar || null
   }
 
   private async onLogout(): Promise<void> {

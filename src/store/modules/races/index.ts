@@ -31,7 +31,7 @@ const mutations: MutationTree<RaceState> = {
   },
 }
 
-const actions: ActionTree<RaceState, RootState>  = {
+const actions: ActionTree<RaceState, RootState> = {
   reset({ commit }) {
     commit('reset')
   },
@@ -59,6 +59,7 @@ export const getters: GetterTree<RaceState, RootState> = {
 
     return state.races[lastRaceId]
   },
+  racesArray: (state) => Object.values(state.races),
 }
 
 const raceModule: Module<RaceState, RootState> = {

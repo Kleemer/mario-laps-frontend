@@ -96,7 +96,7 @@ export default class GameToolbar extends Vue {
   private isPending: boolean = false
   private isEndDialogVisible: boolean = false
 
-  @State private readonly player!: RootState['player']
+  @State private readonly user!: RootState['user']
   @State private readonly socketId!: RootState['socketId']
   @MarioLapModule.State('id') private readonly marioLapId!: MarioLapState['id']
   @RaceModule.State private readonly raceList!: RaceState['raceList']
@@ -113,11 +113,11 @@ export default class GameToolbar extends Vue {
   }
 
   private get username(): string {
-    return this.player?.username || 'Guest'
+    return this.user?.username || 'Guest'
   }
 
   private get avatar(): string | null {
-    return this.player?.avatar || null
+    return this.user?.avatar || null
   }
 
   private get isHost(): boolean {

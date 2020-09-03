@@ -34,7 +34,7 @@ export default class UserCard extends Vue {
   }
 
   private get playerUsername() {
-    return this.$store.state.player.username
+    return this.$store.state.user.username
   }
 
   private get source() {

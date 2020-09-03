@@ -37,10 +37,10 @@ import { getRandomString } from '@/shared/string'
   },
 })
 export default class Home extends Vue {
-  @State private readonly player!: Record<string, any>
+  @State private readonly user!: Record<string, any>
 
   private get username(): string {
-    return this.player.username
+    return this.user.username
   }
 
   private async createLobby(): Promise<void> {

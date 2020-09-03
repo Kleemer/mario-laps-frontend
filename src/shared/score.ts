@@ -30,7 +30,7 @@ export const getScore = (position: Position): Score => {
 }
 
 export const getRaceScore = (race: Race, userId: string): Score => {
-  const user = race.users.find(({ user_id }) => user_id === userId)
+  const user = race.users.find((e) => e.user_id === userId)
 
   if (!user) {
     return 0
@@ -40,7 +40,7 @@ export const getRaceScore = (race: Race, userId: string): Score => {
 }
 
 export const getUserScore = (races: Race[], userId: string): Score => {
-  return Object.values(races).reduce((result, race) => {
+  return races.reduce((result, race) => {
     return result + getRaceScore(race, userId)
   }, 0)
 }

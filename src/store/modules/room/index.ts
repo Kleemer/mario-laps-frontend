@@ -1,5 +1,5 @@
 import {
-  Module, MutationTree, ActionTree,
+  Module, MutationTree, ActionTree, GetterTree,
 } from 'vuex'
 import { resetMixin } from '@/store/utils'
 import { RootState } from '@/store/types'
@@ -38,7 +38,7 @@ const mutations: MutationTree<RoomState> = {
   },
 }
 
-const actions: ActionTree<RoomState, RootState>  = {
+const actions: ActionTree<RoomState, RootState> = {
   reset({ commit }) {
     commit('reset')
   },
@@ -64,11 +64,16 @@ const actions: ActionTree<RoomState, RootState>  = {
   },
 }
 
+const getters: GetterTree<RoomState, RootState> = {
+  users: (state) => state.users,
+}
+
 const roomModule: Module<RoomState, RootState> = {
   namespaced: true,
   state,
   mutations,
   actions,
+  getters,
 }
 
 export default roomModule

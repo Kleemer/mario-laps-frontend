@@ -34,7 +34,7 @@ export default class RoomInput extends Vue {
   private roomId: string = ''
 
   private get playerUsername() {
-    return this.$store.state.player.username
+    return this.$store.state.user.username
   }
 
   private onInput() {

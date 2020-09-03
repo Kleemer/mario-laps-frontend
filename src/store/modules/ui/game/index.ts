@@ -4,16 +4,12 @@ import { RootState } from '@/store/types'
 import { GameState } from './types'
 
 const state = (): GameState => ({
-  laps: 0,
   position: 0,
   submitted: false,
 })
 
 const mutations: MutationTree<GameState> = {
   ...resetMixin(state),
-  setLaps: (state, payload) => {
-    state.laps = payload
-  },
   setPosition: (state, payload) => {
     state.position = payload
   },
@@ -25,9 +21,6 @@ const mutations: MutationTree<GameState> = {
 const actions: ActionTree<GameState, RootState>  = {
   reset({ commit }, keep) {
     commit('reset', keep)
-  },
-  setLaps({ commit }, laps) {
-    commit('setLaps', laps)
   },
   setPosition({ commit }, position) {
     commit('setPosition', position)

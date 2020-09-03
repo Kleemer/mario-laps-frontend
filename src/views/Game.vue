@@ -80,6 +80,7 @@ import { updateRaceLapSetting } from '@/api/types/routes/race-lap'
 import { RootState } from '@/store/types'
 import { RoomState } from '@/store/modules/room/types'
 import { GameState } from '@/store/modules/ui/game/types'
+import { LapState } from '@/store/modules/player/laps/types'
 import {
   getScore,
   getRaceScore,
@@ -90,10 +91,11 @@ import {
 } from '@/shared/score'
 import { Lap, getLap } from '@/shared/lap'
 
-const GameModule = namespace('ui/game')
+const LapModule = namespace('player/laps')
 const RoomModule = namespace('room')
 const RoundModule = namespace('rounds')
 const RaceModule = namespace('races')
+const GameModule = namespace('ui/game')
 
 type UserScoreTuple = [string, Score]
 
@@ -110,15 +112,15 @@ export default class Game extends Vue {
   private isPendingToggle: boolean = false
 
   @GameModule.Action private readonly reset!: Function
-  @GameModule.Action private readonly setLaps!: Function
   @GameModule.Action private readonly setPosition!: Function
   @GameModule.Action private readonly setSubmitted!: Function
-  @GameModule.State('laps') private readonly totalLaps!: GameState['laps']
   @GameModule.State private readonly position!: GameState['position']
   @GameModule.State private readonly submitted!: GameState['submitted']
+  @LapModule.State('laps') private readonly totalLaps!: LapState['laps']
 
-  @State private readonly player!: RootState['player']
+  @State private readonly user!: RootState['user']
   @State private readonly socketId!: RootState['socketId']
+  @RaceModule.Getter private readonly racesArray!: Race[]
   @RaceModule.Getter('current') private readonly race!: Race
   @RaceModule.State private readonly races!: Race[]
   @RoomModule.State private readonly hostId!: RoomState['hostId']
@@ -126,7 +128,7 @@ export default class Game extends Vue {
   @RoundModule.Getter('current') private readonly round!: Round
 
   private get username(): string {
-    return this.player.username
+    return this.user.username
   }
 
   private get isHost(): boolean {
@@ -138,25 +140,24 @@ export default class Game extends Vue {
   }
 
   private get score(): Score {
-    const raceArray = Object.values(this.races)
-    if (raceArray.length < 2) {
+    if (this.racesArray.length < 2) {
       return 0
     }
 
-    const previousRace = raceArray[raceArray.length - 2]
-    return getRaceScore(previousRace, this.player.id)
+    const previousRace = this.racesArray[this.racesArray.length - 2]
+    return getRaceScore(previousRace, this.user.id)
   }
 
   private get totalScore(): Score {
-    return getUserScore(this.races, this.player.id)
+    return getUserScore(this.racesArray, this.user.id)
   }
 
   private get laps(): Lap {
-    return getLap(Object.values(this.races), this.player.id, this.roomUsers.length)
+    return getLap(this.racesArray, this.user.id, this.roomUsers.length)
   }
 
   private get rank(): number {
-    const userRaces = Object.values(this.races).map((r) => r.users)
+    const userRaces = this.racesArray.map((r) => r.users)
 
     const userIds: string[] = userRaces.reduce(
       (acc: string[], race) => acc.concat(race.map((user) => user.user_id)),
@@ -167,7 +168,7 @@ export default class Game extends Vue {
 
     const userScoreTuples: UserScoreTuple[] = uniqueUserIds.reduce(
       (acc: UserScoreTuple[], userId) => {
-        acc.push([userId, getUserScore(this.races, userId)])
+        acc.push([userId, getUserScore(this.racesArray, userId)])
         return acc
       },
       [],
@@ -179,7 +180,7 @@ export default class Game extends Vue {
 
     const sortedUserScoreTuples = userScoreTuples.sort(sortScoreTupleFn)
 
-    return sortedUserScoreTuples.findIndex((tuple) => tuple[0] === this.player.id) + 1
+    return sortedUserScoreTuples.findIndex((tuple) => tuple[0] === this.user.id) + 1
   }
 
   private get allPositions(): Position[] {
@@ -264,9 +265,6 @@ export default class Game extends Vue {
       })
 
       this.$socket.client.emit('nextRace')
-      console.log('this.totalLaps', this.totalLaps)
-      console.log('this.laps', this.laps)
-      this.setLaps(this.totalLaps + this.laps)
     } catch (err) {
       console.trace('Something went wrong', err)
     } finally {

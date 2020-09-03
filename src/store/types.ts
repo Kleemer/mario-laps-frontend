@@ -1,7 +1,7 @@
 import { User } from '@/types'
 
 export interface RootState {
-  player: User | Record<string, any>
+  user: User | Record<string, any>
   socketId: String | null
 }
 

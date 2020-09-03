@@ -48,6 +48,7 @@ export default class AppContainer extends Vue {
     this.$store.dispatch('marioLap/reset')
     this.$store.dispatch('room/reset')
     this.$store.dispatch('ui/game/reset')
+    this.$store.dispatch('player/laps/reset')
     this.$router.push('/home')
     this.$socket.client.emit('leaveRoom', event)
   }
@@ -61,7 +62,8 @@ export default class AppContainer extends Vue {
   @Socket()
   private nextRace(event: any) {
     console.log('nextRace')
-    this.$store.dispatch('ui/game/reset', [ 'laps '])
+    this.$store.dispatch('player/laps/addLaps')
+    this.$store.dispatch('ui/game/reset')
   }
 
   @Socket()

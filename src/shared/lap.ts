@@ -3,25 +3,29 @@ import { Race } from '@/store/modules/races/types'
 import { getRelativePosition, getPosition } from './position'
 
 export type Lap = number
+export type Streak = number
 
 type LapObject = LapObjectFunction[]
 type LapObjectFunction = (e: Position) => number
 
 /**
- * The rules are the following PER ROUND
+ * Laps ignore rounds. If a player has 8 laps and a new Round is launched,
+ * he will keep his laps, as well as his streak.
+ *
+ * The rules are the following
  * 2 players
- * - First race -> 6 laps each
+ * - First race ->  6 laps each
  * - Every race ->  1st (relative) get 2 laps
  *                  2nd (relative) get 1 lap
  *
  * 3 players
- * - First race -> 6 laps each
+ * - First race ->  6 laps each
  * - Every race ->  1st (relative) get 3 laps
  *                  2nd (relative) get 2 laps
  *                  3rd (relative) get 1 lap
  *
  * 4 players
- * - First race -> 4 laps each
+ * - First race ->  4 laps each
  * - Every race ->  1st (relative) get 3 laps
  *                  2nd (relative) get 2 laps
  *                  3rd (relative) get 2 laps if 3rd position, otherwise get 1 lap
@@ -56,7 +60,8 @@ const findLapObject = (nbUsers: number): LapObject | null => {
   return lapObject
 }
 
-export const getLap = (races: Race[], userId: string, nbUsers: number): number => {
+// This gets the number of Laps for the current race
+export const getLap = (races: Race[], userId: string, nbUsers: number): Lap => {
   if (getLapRace(races) === 0) {
     return 0
   }
@@ -85,6 +90,7 @@ export const getLap = (races: Race[], userId: string, nbUsers: number): number =
   return lapObject[relativePosition - 1](position)
 }
 
+// Used to return the initial number of laps to add to each player
 const getFirstLap = (nbUsers: number): number => {
   if (nbUsers === 4) {
     return 4

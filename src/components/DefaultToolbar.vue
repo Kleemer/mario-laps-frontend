@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { logout } from '@/api/types/routes/auth'
+import { logout } from '@/api/routes/auth'
 import { getLoggedInCookie } from '@/shared/auth'
 
 @Component({ })

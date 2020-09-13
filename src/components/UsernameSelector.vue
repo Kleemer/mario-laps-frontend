@@ -11,7 +11,7 @@
 import {
   Component, Vue, Prop,
 } from 'vue-property-decorator'
-import { User } from '@/types'
+import { User } from '@/types/models'
 
 type FormState = Pick<User, 'username'> | null
 

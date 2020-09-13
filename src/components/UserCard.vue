@@ -14,7 +14,7 @@
 import {
   Component, Vue, Prop,
 } from 'vue-property-decorator'
-import { User } from '@/types'
+import { User } from '@/types/models'
 
 export interface Props {
   user?: User;

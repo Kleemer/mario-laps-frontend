@@ -26,7 +26,7 @@
 import {
   Component, Vue, Prop,
 } from 'vue-property-decorator'
-import { Room } from '@/types'
+import { Room } from '@/types/models'
 
 @Component({ })
 export default class RoomInput extends Vue {

@@ -1,14 +1,4 @@
-export interface User {
-  id: string
-  user_id: string
-  position: number
-}
-
-export interface Race {
-  id: string
-  users: User[]
-  withLap: boolean
-}
+import { Race } from '@/types/models'
 
 export interface RaceState {
   races: Record<Race['id'], Race>,

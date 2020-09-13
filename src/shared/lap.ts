@@ -1,5 +1,5 @@
 import { Position } from './score'
-import { Race } from '@/store/modules/races/types'
+import { Race } from '@/types/models'
 import { getRelativePosition, getPosition } from './position'
 
 export type Lap = number

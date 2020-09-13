@@ -1,4 +1,4 @@
-import { User } from '@/types'
+import { User } from '@/types/models'
 
 export interface RootState {
   user: User | Record<string, any>

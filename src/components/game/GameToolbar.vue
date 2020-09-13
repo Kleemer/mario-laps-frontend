@@ -82,7 +82,7 @@ import { RoomState } from '@/store/modules/room/types'
 import { RoundState } from '@/store/modules/rounds/types'
 import { RaceState } from '@/store/modules/races/types'
 import { RootState } from '@/store/types'
-import createRound from '@/api/types/routes/round'
+import createRound from '@/api/routes/round'
 import { MarioLapState } from '@/store/modules/mario-lap/types'
 import { last } from '@/shared/array'
 

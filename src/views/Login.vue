@@ -27,8 +27,7 @@ import UsernameSelector from '@/components/UsernameSelector.vue'
 import { getRandomString } from '@/shared/string'
 import { getPlayerUsername } from '@/shared/user'
 import { getLoggedInCookie } from '@/shared/auth'
-
-import { login, logout } from '@/api/types/routes/auth'
+import { login, logout } from '@/api/routes/auth'
 
 @Component({
   components: {

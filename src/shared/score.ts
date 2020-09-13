@@ -1,4 +1,4 @@
-import { Race } from '@/store/modules/races/types'
+import { Race } from '@/types/models'
 
 export type Position = number
 export type Score = number
@@ -30,7 +30,7 @@ export const getScore = (position: Position): Score => {
 }
 
 export const getRaceScore = (race: Race, userId: string): Score => {
-  const user = race.users.find((e) => e.user_id === userId)
+  const user = race.userRaces.find((e) => e.userId === userId)
 
   if (!user) {
     return 0

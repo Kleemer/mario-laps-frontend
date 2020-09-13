@@ -2,8 +2,8 @@ import { Module, MutationTree, ActionTree } from 'vuex'
 import { resetMixin } from '@/store/utils'
 import { RootState } from '@/store/types'
 import { LapState } from './types'
-import { getLap, getLapRace } from '@/shared/lap'
-import { Race } from '../../races/types'
+import { getLap } from '@/shared/lap'
+import { Race } from '@/types/models'
 
 const state = (): LapState => ({
   laps: 0,

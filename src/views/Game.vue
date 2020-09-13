@@ -32,7 +32,7 @@
         </VBtn>
       </VCol>
       <VCol cols="6">
-        <!-- @todo add course speciale -->
+        <!-- @todo add special race selection -->
       </VCol>
     </VRow>
     <PositionGrid
@@ -72,11 +72,10 @@ import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
 import RaceInfoCard from '@/components/game/RaceInfoCard'
 import PositionGrid from '@/components/game/PositionGrid'
 
-import { Round } from '@/store/modules/rounds/types'
-import { Race } from '@/store/modules/races/types'
-import { createRace } from '@/api/types/routes/race'
-import { createUserRace } from '@/api/types/routes/user-race'
-import { updateRaceLapSetting } from '@/api/types/routes/race-lap'
+import { Race, Round } from '@/types/models'
+import { createRace } from '@/api/routes/race'
+import { createUserRace } from '@/api/routes/user-race'
+import { updateRaceLapSetting } from '@/api/routes/race-lap'
 import { RootState } from '@/store/types'
 import { RoomState } from '@/store/modules/room/types'
 import { GameState } from '@/store/modules/ui/game/types'
@@ -157,10 +156,10 @@ export default class Game extends Vue {
   }
 
   private get rank(): number {
-    const userRaces = this.racesArray.map((r) => r.users)
+    const userRaces = this.racesArray.map((r) => r.userRaces)
 
     const userIds: string[] = userRaces.reduce(
-      (acc: string[], race) => acc.concat(race.map((user) => user.user_id)),
+      (acc: string[], race) => acc.concat(race.map((user) => user.userId)),
       [],
     )
 
@@ -188,7 +187,7 @@ export default class Game extends Vue {
   }
 
   private get selectedPositions(): Position[] {
-    const selectedPositions = this.race.users.map((u) => u.position)
+    const selectedPositions = this.race.userRaces.map((u) => u.position)
     if (selectedPositions.includes(this.position)) {
       this.setPosition(0)
     }
@@ -198,7 +197,7 @@ export default class Game extends Vue {
 
 
   private get canNext(): boolean {
-    return this.race.users.length === this.roomUsers.length
+    return this.race.userRaces.length === this.roomUsers.length
   }
 
   private onChange(position: Position): void {
@@ -208,21 +207,26 @@ export default class Game extends Vue {
   private async onSubmit(): Promise<void> {
     try {
       this.isPending = true
-      const { users } = await createUserRace(
+      const race = await createUserRace(
         this.race.id,
         { position: this.position },
       )
 
-      this.$socket.client.emit('updateStore', {
-        action: 'races/addRaceUsers',
-        data: {
-          roundId: this.round.id,
-          raceId: this.race.id,
-          users,
-        },
-      })
-      this.setPosition(0)
-      this.setSubmitted(true)
+      if (race) {
+        this.$socket.client.emit('updateStore', {
+          action: 'races/addUserRaces',
+          data: {
+            roundId: this.round.id,
+            raceId: this.race.id,
+            userRaces: race.userRaces,
+          },
+        })
+        this.setPosition(0)
+        this.setSubmitted(true)
+      } else {
+        // @todo handle error
+      }
+
     } catch (err) {
       console.trace('Something went wrong', err)
     } finally {
@@ -233,19 +237,23 @@ export default class Game extends Vue {
   private async onToggleLap(): Promise<void> {
     try {
       this.isPendingToggle = true
-      const { withLap } = await updateRaceLapSetting(
+      const race = await updateRaceLapSetting(
         this.race.id,
         { withLap: !this.withLap },
       )
 
-      this.$socket.client.emit('updateStore', {
-        action: 'races/updateRace',
-        data: {
-          roundId: this.round.id,
-          raceId: this.race.id,
-          data: { withLap },
-        },
-      })
+      if (race) {
+        this.$socket.client.emit('updateStore', {
+          action: 'races/updateRace',
+          data: {
+            roundId: this.round.id,
+            raceId: this.race.id,
+            data: { withLap: race.withLap },
+          },
+        })
+      } else {
+        // @todo handle error
+      }
 
     } catch (err) {
       console.trace('Something went wrong', err)

@@ -1,10 +1,10 @@
-import { Race } from '@/store/modules/races/types'
+import { Race } from '@/types/models'
 import { Position } from './score'
 
 export const getPosition = (race: Race, userId: string): Position | undefined => {
   const user = race
-    .users
-    .find((e) => e.user_id === userId)
+    .userRaces
+    .find((e) => e.userId === userId)
 
   return user?.position
 }
@@ -12,8 +12,8 @@ export const getPosition = (race: Race, userId: string): Position | undefined =>
 
 export const getRelativePosition = (race: Race, userId: string): Position => {
   const sortedUsers = race
-    .users
+    .userRaces
     .sort((u1, u2) => u1.position - u2.position)
 
-  return sortedUsers.findIndex((u) => u.user_id === userId) + 1
+  return sortedUsers.findIndex((u) => u.userId === userId) + 1
 }

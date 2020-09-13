@@ -4,9 +4,9 @@ import {
 } from 'vuex'
 import { resetMixin } from '@/store/utils'
 import { RootState } from '@/store/types'
-import { RoundState, Round } from './types'
-import { Data as RoundData } from '@/api/types/routes/round'
+import { RoundState } from './types'
 import { last } from '@/shared/array'
+import { Round } from '@/types'
 
 const state = (): RoundState => ({
   rounds: {},
@@ -26,10 +26,10 @@ const actions: ActionTree<RoundState, RootState>  = {
     commit('reset')
     dispatch('races/reset', null, { root: true })
   },
-  setRounds({ dispatch }, payload) {
-    payload.forEach((round: RoundData) => dispatch('addRound', round))
+  setRounds({ dispatch }, payload: Round[]) {
+    payload.forEach((round) => dispatch('addRound', round))
   },
-  addRound({ commit, dispatch }, payload: RoundData) {
+  addRound({ commit, dispatch }, payload: Round) {
     commit('addRound', {
       id: payload.id,
       races: payload.races.map((e) => e.id),

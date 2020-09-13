@@ -4,8 +4,9 @@ import {
 } from 'vuex'
 import { resetMixin } from '@/store/utils'
 import { RootState } from '@/store/types'
-import { RaceState, Race } from './types'
+import { RaceState } from './types'
 import { last } from '@/shared/array'
+import { Race } from '@/types/models'
 
 const state = (): RaceState => ({
   races: {},
@@ -35,7 +36,7 @@ const actions: ActionTree<RaceState, RootState> = {
   reset({ commit }) {
     commit('reset')
   },
-  setRaces({ commit, dispatch }, payload) {
+  setRaces({ commit, dispatch }, payload: Race[]) {
     commit('addRaceList')
     payload.forEach((race: Race) => dispatch('addRace', race))
   },
@@ -45,10 +46,13 @@ const actions: ActionTree<RaceState, RootState> = {
   updateRace({ commit }, payload: Race) {
     commit('updateRace', payload)
   },
-  addRaceUsers({ commit }, { raceId, users }) {
+  addUserRaces(
+    { commit },
+    { raceId, userRaces }: { raceId: Race['id'], userRaces: Race['userRaces'] },
+  ) {
     commit('updateRace', {
       raceId,
-      data: { users },
+      data: { userRaces },
     })
   },
 }

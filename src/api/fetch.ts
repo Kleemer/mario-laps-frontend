@@ -1,5 +1,5 @@
 import { DEFAULTS } from './constants'
-import { JSONResponse } from './types'
+import { JSONResponse } from './routes/types'
 
 export const fetchAny = async (
   request: RequestInfo,
@@ -11,17 +11,34 @@ export const fetchAny = async (
   return response
 }
 
-export const fetchJson = async <T extends Record<string, any>>(
+export const fetchJson = async <T>(
   request: RequestInfo,
   config?: RequestInit,
 ): Promise<JSONResponse<T>> => {
-  const options = Object.assign({}, DEFAULTS, config)
-  const response = await fetchAny(request, options)
-  const json = await response.json()
+  let response
+  try {
+    response = await fetchAny(request, config)
+    const json = await response.json()
+    const {
+      status, statusText, ok,
+    } = response
 
-  return {
-    data: json.data,
-    json,
-    request,
+    return {
+      data: json.data,
+      status,
+      statusText,
+      ok,
+      json,
+      request,
+    }
+  } catch (err) {
+    return {
+      data: null,
+      status: response?.status || 500,
+      statusText: response?.statusText || 'Unexpected error',
+      ok: false,
+      json: null,
+      request,
+    }
   }
 }

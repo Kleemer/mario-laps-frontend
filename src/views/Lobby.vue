@@ -59,7 +59,7 @@ import {
 import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
 import UserCard from '@/components/UserCard.vue'
 import { RoomState } from '@/store/modules/room/types'
-import { createMarioLap } from '@/api/types/routes/mario-lap'
+import { createMarioLap } from '@/api/routes/mario-lap'
 import { RootState } from '@/store/types'
 
 const RoomModule = namespace('room')

@@ -1,9 +1,4 @@
-import { Race } from '../races/types'
-
-export interface Round {
-  id: string
-  races: Array<Race['id']>
-}
+import { Round } from '@/types/models'
 
 export interface RoundState {
   rounds: Record<Round['id'], Round>

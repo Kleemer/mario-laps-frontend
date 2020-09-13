@@ -9,8 +9,8 @@
       </VCol>
       <VCol cols="4">
         <RaceInfoCard
-          :topLabel="laps"
-          :mainLabel="totalLaps"
+          :topLabel="0"
+          :mainLabel="0"
           bottomLabel="Laps"/>
       </VCol>
       <VCol cols="4">
@@ -151,9 +151,9 @@ export default class Game extends Vue {
     return getUserScore(this.racesArray, this.user.id)
   }
 
-  private get laps(): Lap {
-    return getLap(this.racesArray, this.user.id, this.roomUsers.length)
-  }
+  // private get laps(): Lap {
+  //   return getLap(this.racesArray, this.user.id, this.roomUsers.length)
+  // }
 
   private get rank(): number {
     const userRaces = this.racesArray.map((r) => r.userRaces)

@@ -1,5 +1,5 @@
 import { NavigationGuard, Route } from 'vue-router'
-import { getLoggedInCookie } from '@/shared/auth'
+import { getLoggedInCookie, setLoggedInCookie } from '@/shared/auth'
 import { getPlayerUsername } from '@/shared/user'
 import { Store } from 'vuex'
 import { RootState } from '@/store/types'
@@ -21,7 +21,13 @@ const authMiddleware = (store: Store<RootState>): NavigationGuard => async (to, 
 
   if (loggedIn && !store.state.user.id) {
     const user = await getMe()
-    store.dispatch('setPlayerId', user?.id)
+    // @todo revisit login flow
+    if (user) {
+      store.dispatch('setPlayerId', user.id)
+    } else {
+      setLoggedInCookie(false)
+      loginRedirect(next, to)
+    }
   }
 
 

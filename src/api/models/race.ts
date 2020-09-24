@@ -7,5 +7,6 @@ export const normalizeRace = (rawRace: RawRace): Race => {
     id: rawRace.id,
     userRaces: rawRace.user_races?.map((e) => normalizeUserRace(e)) || [],
     withLap: rawRace.with_lap,
+    raceType: rawRace.race_type,
   }
 }

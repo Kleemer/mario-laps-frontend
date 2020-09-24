@@ -20,8 +20,10 @@
           bottomLabel="Rang"/>
       </VCol>
     </VRow>
-    <VRow>
-      <VCol cols="6">
+    <VRow justify="space-between">
+      <VCol
+        align-self="center"
+        cols="6">
         <VBtn
           :disabled="!isHost || isPendingToggle"
           :loading="isPendingToggle"
@@ -31,8 +33,14 @@
           Laps: {{ withLap ? 'ON' : 'OFF' }}
         </VBtn>
       </VCol>
-      <VCol cols="6">
-        <!-- @todo add special race selection -->
+      <VCol
+        align-self="center"
+        cols="6"
+        class="text-right">
+        <RaceTypeInput
+          :disabled="!isHost"
+          :race-id="race.id"
+          :value="race.raceType ? race.raceType.id : null" />
       </VCol>
     </VRow>
     <PositionGrid
@@ -69,8 +77,9 @@ import { Component, Vue } from 'vue-property-decorator'
 import { Action, Getter, State, namespace } from 'vuex-class'
 
 import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
-import RaceInfoCard from '@/components/game/RaceInfoCard'
 import PositionGrid from '@/components/game/PositionGrid'
+import RaceInfoCard from '@/components/game/RaceInfoCard'
+import RaceTypeInput from '@/components/RaceTypeInput.vue'
 
 import { Race, Round } from '@/types/models'
 import { createRace } from '@/api/routes/race'
@@ -101,8 +110,9 @@ type UserScoreTuple = [string, Score]
 @Component({
   components: {
     CenteredSmallCard,
-    RaceInfoCard,
     PositionGrid,
+    RaceInfoCard,
+    RaceTypeInput,
   },
 })
 export default class Game extends Vue {
@@ -246,7 +256,6 @@ export default class Game extends Vue {
         this.$socket.client.emit('updateStore', {
           action: 'races/updateRace',
           data: {
-            roundId: this.round.id,
             raceId: this.race.id,
             data: { withLap: race.withLap },
           },

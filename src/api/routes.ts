@@ -91,9 +91,18 @@ const createUserRace: RouteWithParams = {
  * @see App\Http\Controllers\RaceLapController@udpate
  */
 const updateRaceLapSetting: RouteWithParams = {
-  type: 'UserRacePayload',
+  type: 'RacePayload',
   method: 'PATCH',
   path: (raceId: string) => toPath(`/races/${raceId}/lap`),
+}
+
+/**
+ * @see App\Http\Controllers\RaceTypeController@udpate
+ */
+const updateRaceType: RouteWithParams = {
+  type: 'RacePayload',
+  method: 'PATCH',
+  path: (raceId: string) => toPath(`/races/${raceId}/type`),
 }
 
 export const routes = {
@@ -105,6 +114,7 @@ export const routes = {
   logout,
   me,
   updateRaceLapSetting,
+  updateRaceType,
   users,
 }
 

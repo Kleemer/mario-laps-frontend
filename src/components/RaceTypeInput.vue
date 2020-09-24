@@ -73,7 +73,7 @@ import { Maybe } from '@/api'
 @Component({ })
 export default class RaceTypeInput extends Vue {
   @Prop(String) public readonly raceId!: Race['id']
-  @Prop(String) public readonly value: Maybe<RaceType['id']>
+  @Prop(String) public readonly value!: Maybe<RaceType['id']>
   @Prop({ type: Boolean, default: false }) public readonly disabled!: boolean
 
   private RACE_TYPES: typeof RACE_TYPES = RACE_TYPES
@@ -83,10 +83,8 @@ export default class RaceTypeInput extends Vue {
   private isPending: boolean = false
   private internalValue: Maybe<RaceType['id']> = this.value
 
-  private getRaceTypeImg(raceTypeId: Maybe<RaceType['id']>): string {
-    if (raceTypeId) {
-      return `${this.publicPath}race-types/${raceTypeId}.png`
-    }
+  private getRaceTypeImg(raceTypeId: RaceType['id']): string {
+    return `${this.publicPath}race-types/${raceTypeId}.png`
   }
 
   private onClick(raceTypeId: RaceType['id']): void {

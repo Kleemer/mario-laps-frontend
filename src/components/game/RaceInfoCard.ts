@@ -15,11 +15,15 @@ const provideDefaultClass = (classes: any): any[] => {
   return [ classes, 'race-info-card' ]
 }
 
-const provideDefaultClassMainLabel = (): any[] => {
+const provideDefaultClassMainLabel = (mainLabel: Props['mainLabel']): any[] => {
   return [
     'race-info-card__main-label',
-    'display-2',
     'font-weight-bold',
+    {
+      'display-2': mainLabel < 100,
+      'display-1': mainLabel >= 100 && mainLabel < 1000,
+      'headline': mainLabel >= 1000 && mainLabel < 10000,
+    },
   ]
 }
 
@@ -107,7 +111,7 @@ const genMainLabel = (
     class: [ 'text-center py-0' ],
   }, [
     h('div', {
-      class: provideDefaultClassMainLabel(),
+      class: provideDefaultClassMainLabel(mainLabel),
     }, [
       rank ? mainLabel || '-' : mainLabel,
       rank && mainLabel ? genMainLabelSuffix(h, mainLabel) : undefined,

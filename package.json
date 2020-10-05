@@ -10,11 +10,9 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.8.2",
-    "@mdi/font": "^4.8.95",
+    "@mdi/font": "5.6.55",
     "cors": "2.8.5",
     "js-cookie": "2.2.1",
-    "roboto-fontface": "*",
     "socket.io-client": "2.3.1",
     "vue": "2.6.12",
     "vue-class-component": "7.2.6",

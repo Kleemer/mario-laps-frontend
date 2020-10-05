@@ -12,7 +12,6 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.2",
     "@mdi/font": "^4.8.95",
-    "core-js": "^3.4.3",
     "cors": "^2.8.5",
     "js-cookie": "2.2.1",
     "roboto-fontface": "*",

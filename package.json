@@ -14,7 +14,7 @@
     "@mdi/font": "^4.8.95",
     "core-js": "^3.4.3",
     "cors": "^2.8.5",
-    "js-cookie": "^2.2.1",
+    "js-cookie": "2.2.1",
     "roboto-fontface": "*",
     "socket.io-client": "2.3.1",
     "vue": "2.6.12",
@@ -29,7 +29,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.8.3",
     "@types/jest": "^24.0.19",
-    "@types/js-cookie": "^2.2.4",
+    "@types/js-cookie": "2.2.6",
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-typescript": "^4.1.0",
     "@vue/cli-plugin-unit-jest": "^4.1.0",

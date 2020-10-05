@@ -56,10 +56,11 @@ import {
   namespace,
 } from 'vuex-class'
 
+import { createMarioLap } from '@/api/routes/mario-lap'
+import createRound from '@/api/routes/round'
 import CenteredSmallCard from '@/components/CenteredSmallCard.vue'
 import UserCard from '@/components/UserCard.vue'
 import { RoomState } from '@/store/modules/room/types'
-import { createMarioLap } from '@/api/routes/mario-lap'
 import { RootState } from '@/store/types'
 
 const RoomModule = namespace('room')
@@ -87,7 +88,27 @@ export default class Lobby extends Vue {
       this.isPending = true
       const marioLap = await createMarioLap()
 
-      this.$socket.client.emit('startGame', marioLap)
+      if (!marioLap) {
+        throw new Error()
+      }
+
+      this.$socket.client.emit('updateStore', {
+        action: 'marioLap/setMarioLap',
+        data: marioLap,
+      })
+
+      const firstRoundAndRace = await createRound(marioLap.id)
+
+      if (!firstRoundAndRace) {
+        throw new Error()
+      }
+
+      this.$socket.client.emit('updateStore', {
+        action: 'rounds/addRound',
+        data: firstRoundAndRace,
+      })
+
+      this.$socket.client.emit('startGame')
     } catch (err) {
       // @todo add snackbar
       console.log('Something went wrong', err)

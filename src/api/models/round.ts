@@ -6,7 +6,7 @@ export const normalizeRound = (rawRound: RawRound): Round => {
   return {
     id: rawRound.id,
     marioLapId: rawRound.mario_lap_id,
-    races: rawRound.races?.map((rawRace: RawRace) => normalizeRace(rawRace)) || [],
+    raceIds: rawRound.races?.map((rawRace: RawRace) => normalizeRace(rawRace).id) || [],
     createdAt: rawRound.created_at,
   }
 }

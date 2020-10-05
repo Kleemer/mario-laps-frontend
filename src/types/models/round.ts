@@ -4,6 +4,6 @@ import { MarioLap } from './mario-lap';
 export interface Round {
   id: string
   marioLapId: MarioLap['id']
-  races: Race[]
+  raceIds: Array<Race['id']>
   createdAt: Date
 }

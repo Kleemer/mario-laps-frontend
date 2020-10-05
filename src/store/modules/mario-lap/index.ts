@@ -4,6 +4,7 @@ import {
 import { resetMixin } from '@/store/utils'
 import { RootState } from '@/store/types'
 import { MarioLapState } from './types'
+import { MarioLap } from '@/types'
 
 const state = (): MarioLapState => ({
   id: null,
@@ -21,12 +22,8 @@ const actions: ActionTree<MarioLapState, RootState>  = {
     commit('reset')
     dispatch('rounds/reset', null, { root: true })
   },
-  setMarioLap({ dispatch }, { id, rounds }) {
-    dispatch('setId', id)
-    dispatch('rounds/setRounds', rounds, { root: true })
-  },
-  setId({ commit }, payload) {
-    commit('setId', payload)
+  setMarioLap({ commit }, marioLap: MarioLap) {
+    commit('setId', marioLap.id)
   },
 }
 

@@ -6,7 +6,8 @@ import { resetMixin } from '@/store/utils'
 import { RootState } from '@/store/types'
 import { RoundState } from './types'
 import { last } from '@/shared/array'
-import { Round } from '@/types'
+import { Race, Round } from '@/types'
+import { RoundAndRace } from '@/api/routes/round'
 
 const state = (): RoundState => ({
   rounds: {},
@@ -19,6 +20,15 @@ const mutations: MutationTree<RoundState> = {
     Vue.set(state.rounds, payload.id, payload)
     state.roundList.push(payload.id)
   },
+  addRoundRace: (state, payload: { roundId: Round['id'], raceId: Race['id'] }) => {
+    state.rounds[payload.roundId].raceIds.push(payload.raceId)
+  },
+  removeRoundRace: (state, payload: { roundId: Round['id'], raceId: Race['id'] }) => {
+    state.rounds[payload.roundId].raceIds = state
+      .rounds[payload.roundId]
+      .raceIds
+      .filter((e) => e !== payload.raceId)
+  },
 }
 
 const actions: ActionTree<RoundState, RootState>  = {
@@ -26,15 +36,10 @@ const actions: ActionTree<RoundState, RootState>  = {
     commit('reset')
     dispatch('races/reset', null, { root: true })
   },
-  setRounds({ dispatch }, payload: Round[]) {
-    payload.forEach((round) => dispatch('addRound', round))
-  },
-  addRound({ commit, dispatch }, payload: Round) {
-    commit('addRound', {
-      id: payload.id,
-      races: payload.races.map((e) => e.id),
-    })
-    dispatch('races/setRaces', payload.races, { root: true })
+  addRound({ commit }, payload: RoundAndRace) {
+    commit('addRound', payload.round)
+    commit('races/addRaceList', null, { root: true })
+    commit('races/addRace', payload.race, { root: true })
   },
 }
 
@@ -42,8 +47,9 @@ export const getters: GetterTree<RoundState, RootState> = {
   current: (state) => {
     const lastRoundId = last(state.roundList)
 
-    return state.rounds[lastRoundId]
+    return state.rounds[lastRoundId!]
   },
+  roundsArray: (state) => Object.values(state.rounds),
 }
 
 const roundModule: Module<RoundState, RootState> = {

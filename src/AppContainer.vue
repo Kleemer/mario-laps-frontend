@@ -36,9 +36,8 @@ export default class AppContainer extends Vue {
   }
 
   @Socket()
-  private startGame(event: any) {
-    console.log('startGame', event)
-    this.$store.dispatch('marioLap/setMarioLap', event)
+  private startGame() {
+    console.log('startGame')
     this.$router.push('game')
   }
 
@@ -68,8 +67,9 @@ export default class AppContainer extends Vue {
 
   @Socket()
   private updateStore(
-    { action, data }: { action: string, data: Record<string, any>},
+    { action, data }: { action: string, data: Record<string, any> },
   ) {
+    console.log('updateStore')
     this.$store.dispatch(action, data)
   }
 

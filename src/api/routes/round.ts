@@ -1,10 +1,16 @@
 import { fetchJson, Maybe } from '@/api'
 import routes from '@/api/routes'
-import { Round } from '@/types/models'
+import { Race, Round } from '@/types/models'
 import { RawRound } from './types'
 import { normalizeRound } from '../models/round'
+import { normalizeRace } from '../models/race'
 
-export const createRound = async (marioLapId: string): Promise<Maybe<Round>> => {
+export interface RoundAndRace {
+  round: Round,
+  race: Race,
+}
+
+export const createRound = async (marioLapId: string): Promise<Maybe<RoundAndRace>> => {
   const { ok, data } = await fetchJson<RawRound>(
     routes.createRound.path,
     {
@@ -16,7 +22,10 @@ export const createRound = async (marioLapId: string): Promise<Maybe<Round>> => 
   )
 
   if (ok && data) {
-    return normalizeRound(data)
+    return {
+      round: normalizeRound(data),
+      race: normalizeRace(data.races![0]),
+     }
   }
 
   // @todo throw error

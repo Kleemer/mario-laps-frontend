@@ -79,6 +79,15 @@ const createRace: RouteWithParams = {
 }
 
 /**
+ * @see App\Http\Controllers\RoundRaceController@store
+ */
+const deleteRace: RouteWithParams = {
+  type: 'RacePayload',
+  method: 'DELETE',
+  path: (roundId: string, raceId: string) => toPath(`/rounds/${roundId}/races/${raceId}`),
+}
+
+/**
  * @see App\Http\Controllers\UserRaceController@store
  */
 const createUserRace: RouteWithParams = {
@@ -110,6 +119,7 @@ export const routes = {
   createRace,
   createRound,
   createUserRace,
+  deleteRace,
   login,
   logout,
   me,

@@ -63,6 +63,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Getter, namespace } from 'vuex-class'
 
 import { RACE_TYPES } from '@/shared/race'
 import { getRandomString } from '@/shared/string'
@@ -70,11 +71,14 @@ import { Race, RaceType } from '@/types'
 import { updateRaceType } from '@/api/routes/race-type'
 import { Maybe } from '@/api'
 
+const RaceModule = namespace('races')
+
 @Component({ })
 export default class RaceTypeInput extends Vue {
-  @Prop(String) public readonly raceId!: Race['id']
   @Prop(String) public readonly value!: Maybe<RaceType['id']>
   @Prop({ type: Boolean, default: false }) public readonly disabled!: boolean
+
+  @RaceModule.Getter('current') private readonly race!: Race
 
   private RACE_TYPES: typeof RACE_TYPES = RACE_TYPES
   private publicPath: string = process.env.BASE_URL
@@ -100,16 +104,15 @@ export default class RaceTypeInput extends Vue {
     try {
       this.isPending = true
       const race = await updateRaceType(
-        this.raceId,
+        this.race.id,
         { raceTypeId: this.internalValue },
       )
 
       if (race) {
-        console.log('race', race)
         this.$socket.client.emit('updateStore', {
           action: 'races/updateRace',
           data: {
-            raceId: this.raceId,
+            raceId: this.race.id,
             data: { raceType: race.raceType },
           },
         })

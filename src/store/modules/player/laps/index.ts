@@ -18,6 +18,9 @@ const mutations: MutationTree<LapState> = {
   addLaps: (state, payload) => {
     state.laps = state.laps + payload
   },
+  removeLaps: (state, payload) => {
+    state.laps = state.laps - payload
+  },
   setStreak: (state, payload) => {
     state.streak = payload
   },
@@ -30,16 +33,28 @@ const actions: ActionTree<LapState, RootState>  = {
   addLaps({ commit, rootState, rootGetters }) {
     const playerId = rootState.user.id
     const roomUsers = rootGetters['room/users']
-    // @todo get all races from all rounds
-    const racesArray = rootGetters['races/racesArray'] as Race[]
+    const allRaces = rootGetters['races/allRacesArray'] as Race[]
 
     const laps = getLap(
-      racesArray.filter((_, index) => index !== racesArray.length - 1),
+      allRaces,
       playerId,
       roomUsers.length,
     )
 
     commit('addLaps', laps)
+  },
+  removeLaps({ commit, rootState, rootGetters }) {
+    const playerId = rootState.user.id
+    const roomUsers = rootGetters['room/users']
+    const allRaces = rootGetters['races/allRacesArray'] as Race[]
+
+    const laps = getLap(
+      allRaces,
+      playerId,
+      roomUsers.length,
+    )
+
+    commit('removeLaps', laps)
   },
   setLaps({ commit }, laps) {
     commit('setLaps', laps)

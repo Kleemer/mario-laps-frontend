@@ -85,6 +85,8 @@ import { RootState } from '@/store/types'
 import createRound from '@/api/routes/round'
 import { MarioLapState } from '@/store/modules/mario-lap/types'
 import { last } from '@/shared/array'
+import { deleteRace } from '@/api/routes/race'
+import { Race } from '@/types'
 
 const RoomModule = namespace('room')
 const MarioLapModule = namespace('marioLap')
@@ -99,9 +101,11 @@ export default class GameToolbar extends Vue {
   @State private readonly user!: RootState['user']
   @State private readonly socketId!: RootState['socketId']
   @MarioLapModule.State('id') private readonly marioLapId!: MarioLapState['id']
+  @RaceModule.Getter('current') private readonly race!: Race
   @RaceModule.State private readonly raceList!: RaceState['raceList']
   @RoomModule.State private readonly hostId!: RoomState['hostId']
   @RoomModule.State('id') private readonly roomId!: RoomState['id']
+  @RoomModule.State('users') private readonly roomUsers!: RoomState['users']
   @RoundModule.State private readonly roundList!: RoundState['roundList']
 
   private get roundOrder(): number {
@@ -109,7 +113,7 @@ export default class GameToolbar extends Vue {
   }
 
   private get raceOrder(): number {
-    return last(this.raceList).length
+    return last(this.raceList)?.length || 1
   }
 
   private get username(): string {
@@ -127,14 +131,28 @@ export default class GameToolbar extends Vue {
   private async onNewRound(): Promise<void> {
     try {
       this.isPending = true
-      const nextRound = await createRound(this.marioLapId!)
+
+      const roundId = this.race.roundId
+      const raceId = this.race.id
+      const deletePreviousRace = this.race.userRaces.length !== this.roomUsers.length
+
+      const nextRoundAndRace = await createRound(this.marioLapId!)
 
       this.$socket.client.emit('updateStore', {
         action: 'rounds/addRound',
-        data: nextRound,
+        data: nextRoundAndRace,
       })
 
       this.$socket.client.emit('nextRound')
+
+      if (deletePreviousRace) {
+        await deleteRace(roundId, raceId)
+
+        this.$socket.client.emit('updateStore', {
+          action: 'races/removeRace',
+          data: { roundId, raceId },
+        })
+      }
     } catch (err) {
       console.trace('Something went wrong', err)
     } finally {
@@ -143,8 +161,15 @@ export default class GameToolbar extends Vue {
     }
   }
 
-  private onEnd(): void {
+  private async onEnd(): Promise<void> {
     this.$socket.client.emit('endGame')
+    if (this.race.userRaces.length !== this.roomUsers.length) {
+      try {
+        await deleteRace(this.race.roundId, this.race.id)
+      } catch (err) {
+        console.trace('Something went wrong', err)
+      }
+    }
   }
 }
 </script>

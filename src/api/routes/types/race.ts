@@ -1,13 +1,14 @@
 import { RawUserRace } from './user-race'
 
 export interface RawRace {
-  id: string;
-  user_races: RawUserRace[] | null;
-  with_lap: boolean;
-  race_type: RawRaceType | null;
+  id: string
+  round_id: string
+  user_races: RawUserRace[] | null
+  with_lap: boolean
+  race_type: RawRaceType | null
 }
 
 export interface RawRaceType {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }

@@ -9,8 +9,8 @@
       </VCol>
       <VCol cols="4">
         <RaceInfoCard
-          :topLabel="0"
-          :mainLabel="0"
+          :topLabel="laps"
+          :mainLabel="totalLaps"
           bottomLabel="Laps"/>
       </VCol>
       <VCol cols="4">
@@ -39,7 +39,6 @@
         class="text-right">
         <RaceTypeInput
           :disabled="!isHost"
-          :race-id="race.id"
           :value="race.raceType ? race.raceType.id : null" />
       </VCol>
     </VRow>
@@ -130,6 +129,7 @@ export default class Game extends Vue {
   @State private readonly user!: RootState['user']
   @State private readonly socketId!: RootState['socketId']
   @RaceModule.Getter private readonly racesArray!: Race[]
+  @RaceModule.Getter private readonly allRacesArray!: Race[]
   @RaceModule.Getter('current') private readonly race!: Race
   @RaceModule.State private readonly races!: Race[]
   @RoomModule.State private readonly hostId!: RoomState['hostId']
@@ -153,7 +153,7 @@ export default class Game extends Vue {
       return 0
     }
 
-    const previousRace = this.racesArray[this.racesArray.length - 2]
+    const previousRace = this.racesArray[this.racesArray.length - 1]
     return getRaceScore(previousRace, this.user.id)
   }
 
@@ -161,9 +161,9 @@ export default class Game extends Vue {
     return getUserScore(this.racesArray, this.user.id)
   }
 
-  // private get laps(): Lap {
-  //   return getLap(this.racesArray, this.user.id, this.roomUsers.length)
-  // }
+  private get laps(): Lap {
+    return getLap(this.allRacesArray, this.user.id, this.roomUsers.length)
+  }
 
   private get rank(): number {
     const userRaces = this.racesArray.map((r) => r.userRaces)
@@ -205,7 +205,6 @@ export default class Game extends Vue {
     return selectedPositions
   }
 
-
   private get canNext(): boolean {
     return this.race.userRaces.length === this.roomUsers.length
   }
@@ -226,7 +225,6 @@ export default class Game extends Vue {
         this.$socket.client.emit('updateStore', {
           action: 'races/addUserRaces',
           data: {
-            roundId: this.round.id,
             raceId: this.race.id,
             userRaces: race.userRaces,
           },
@@ -253,13 +251,17 @@ export default class Game extends Vue {
       )
 
       if (race) {
-        this.$socket.client.emit('updateStore', {
-          action: 'races/updateRace',
-          data: {
-            raceId: this.race.id,
-            data: { withLap: race.withLap },
+        this.$socket.client.emit(
+          'updateStore',
+          {
+            action: 'races/updateRace',
+            data: {
+              raceId: this.race.id,
+              data: { withLap: race.withLap },
+            },
           },
-        })
+          () => this.onResponse(race.withLap),
+        )
       } else {
         // @todo handle error
       }
@@ -268,6 +270,20 @@ export default class Game extends Vue {
       console.trace('Something went wrong', err)
     } finally {
       this.isPendingToggle = false
+    }
+  }
+
+  private onResponse(withLap: Race['withLap']): void {
+    if (withLap) {
+      this.$socket.client.emit(
+        'updateStore',
+        { action: 'player/laps/addLaps', data: {} },
+      )
+    } else {
+      this.$socket.client.emit(
+        'updateStore',
+        { action: 'player/laps/removeLaps', data: {} },
+      )
     }
   }
 

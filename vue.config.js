@@ -7,7 +7,7 @@ module.exports = {
     ;[ 'vue-modules', 'vue', 'normal-modules', 'normal' ].forEach((match) => {
       config.module.rule('sass').oneOf(match).use('sass-loader').tap(opt => ({
         ...opt,
-        prependData: "@import '@/assets/scss/_variables.scss'",
+        additionalData: "@import '@/assets/scss/_variables.scss'",
       }))
     })
 
@@ -24,7 +24,7 @@ module.exports = {
     loaderOptions: {
       scss: {
         implementation: require('sass'),
-        prependData: "@import '@/assets/scss/_variables.scss';",
+        additionalData: "@import '@/assets/scss/_variables.scss';",
       }
     },
   },
